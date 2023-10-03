@@ -1,15 +1,15 @@
 {
-    "keyboard.layout": "00000809",
-    "workbench.startupEditor": "none",
-    "workbench.panel.defaultLocation": "right",
-    "editor.renderWhitespace": "all",
-    "editor.renderControlCharacters": true,
-    "editor.bracketPairColorization.enabled": true,
-    "extensions.ignoreRecommendations": true,
-    "files.exclude": {
-        "**/node_modules": true
-      },
-      "files.watcherExclude": {
-        "**/node_modules": true
-      },
+  "keyboard.layout": "00000809",
+  "workbench.startupEditor": "none",
+  "workbench.panel.defaultLocation": "right",
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.bracketPairColorization.enabled": true,
+  "extensions.ignoreRecommendations": true,
+  "files.exclude": {
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules": true
+  },
 }

@@ -1,8 +1,0 @@
-
-
-services:
-
-  server:
-    image: example_server
-    build:
-      context: ./example_server/
