@@ -2,9 +2,22 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
+
+type Item struct {
+	ID          int64      `json:"id"`
+	User_ID     string     `json:"user_id"`
+	Keywords    []string   `json:"keywords"`
+	Description string     `json:"description"`
+	Image       *string    `json:"image,omitempty"`
+	Lat         float64    `json:"lat"`
+	Long        float64    `json:"long"`
+	Date_from   time.Time  `json:"date_from"`
+	Date_to     *time.Time `json:"date_to,omitempty"`
+}
 
 func main() {
 	r := gin.Default()
