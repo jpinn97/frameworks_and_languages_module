@@ -1,4 +1,4 @@
-DOCKER_IMAGE:=server
+DOCKER_IMAGE:=freecycle-inc_server
 
 build:
 	docker build --tag ${DOCKER_IMAGE} .

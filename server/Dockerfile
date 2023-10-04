@@ -1,14 +1,17 @@
 # Use the latest base image with Go preinstalled
-FROM golang:latest
+FROM golang:1.21.1-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Go binary into the container
-COPY freecycle-inc_server /app/freecycle-inc_server
+# Copy the local code to the container's working directory
+COPY . .
 
-# Expose a port of the Go application to listens on a specific port
-EXPOSE 8080
+# Build the Go application
+RUN go build -o main.go .
 
-# Define the command to run your Go application
-CMD ["/app/freecycle-inc_server"]
+# Expose a port (if your Go application listens on a specific port)
+EXPOSE 8000
+
+# Command to run the Go application
+CMD ["./main.go"]
