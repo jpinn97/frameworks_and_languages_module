@@ -53,7 +53,7 @@ func ConvertItemPOSTToItems(itemPOST ItemPOST, id int64, dateFrom time.Time, dat
 // items map as package-level variable with mutex to ensure concurrency.
 var (
 	items   map[int64]Item
-	itemsMu sync.Mutex
+	itemsMu sync.RWMutex
 )
 
 func init() { // initialize map
@@ -135,7 +135,7 @@ func POSTSingleItemHandler(c *gin.Context) {
 
 	StoredData := ConvertItemPOSTToItems(ReceivedData, newId, parsedTime, nil)
 
-	itemsMu.Lock() // Lock item mutex, thus locking the Items map.
+	itemsMu.Lock() // Lock item mutex for write, thus locking the Items map.
 	defer itemsMu.Unlock()
 	items[newId] = StoredData
 
@@ -155,8 +155,8 @@ func GETSingleItemHandler(c *gin.Context) {
 		return
 	}
 
-	itemsMu.Lock()
-	defer itemsMu.Unlock()
+	itemsMu.RLock() // Lock item mutex for read, thus locking the Items map.
+	defer itemsMu.RUnlock()
 
 	// Check if the item with the specified ID exists
 	item, exists := items[id]
@@ -184,7 +184,7 @@ func DELETESingleItemHandler(c *gin.Context) {
 		return
 	}
 
-	itemsMu.Lock()
+	itemsMu.Lock() // Lock item mutex for write, thus locking the Items map.
 	defer itemsMu.Unlock()
 
 	// Check if the item with the specified ID exists
@@ -226,6 +226,10 @@ func contains(itemKeywords []string, arrayQueryKeywords []string) bool {
 }
 
 func GETMultipleItemsHandler(c *gin.Context) {
+
+	itemsMu.RLock()
+	defer itemsMu.RUnlock()
+
 	// Convert map values to a list (slice) of items.
 	var itemList []Item
 	for _, item := range items {
