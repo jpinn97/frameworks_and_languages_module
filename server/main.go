@@ -65,6 +65,17 @@ var idCounter int64 = 0 // initialise counter
 func main() {
 	r := gin.Default()
 
+	// Allow CORS using middleware package??? https://github.com/gin-contrib/cors
+
+	r.OPTIONS("/*any", func(c *gin.Context) {
+		// Set the appropriate CORS headers
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
+
+		// Respond with a 204 status code
+		c.Status(204)
+	})
+
 	/* Resources to build these functions is from
 	https://go.dev/doc/tutorial/web-service-gin */
 
