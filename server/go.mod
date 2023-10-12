@@ -4,6 +4,8 @@ go 1.21.1
 
 require github.com/umahmood/haversine v0.0.0-20151105152445-808ab04add26
 
+require github.com/gin-gonic/contrib v0.0.0-20221130124618-7e01895a63f2 // indirect
+
 require (
 	github.com/bytedance/sonic v1.10.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect

@@ -100,8 +100,9 @@ func main() {
 
 // Handles HTTP requests to root.
 func RootHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Hello, World!",
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"title": "Root Page",
+		"body":  "Hello User! This is the root page.",
 	})
 }
 

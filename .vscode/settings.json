@@ -7,9 +7,9 @@
   "editor.bracketPairColorization.enabled": true,
   "extensions.ignoreRecommendations": true,
   "files.exclude": {
-    "**/node_modules": true
+    "**/node_modules": false
   },
   "files.watcherExclude": {
-    "**/node_modules": true
+    "**/node_modules": false
   },
 }
