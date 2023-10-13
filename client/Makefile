@@ -19,6 +19,3 @@ clean:
 
 # Default target to build and run the Docker container
 all: build run
-
-# Phony targets
-.PHONY: build run clean all
