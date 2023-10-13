@@ -4,6 +4,7 @@
   "workbench.panel.defaultLocation": "right",
   "editor.renderWhitespace": "all",
   "editor.renderControlCharacters": true,
+  "editor.formatOnSave": true,
   "editor.bracketPairColorization.enabled": true,
   "extensions.ignoreRecommendations": true,
   "files.exclude": {
@@ -11,5 +12,20 @@
   },
   "files.watcherExclude": {
     "**/node_modules": false
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 }

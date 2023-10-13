@@ -66,7 +66,6 @@ func main() {
 	r := gin.Default()
 
 	// Allow CORS using middleware package??? https://github.com/gin-contrib/cors
-
 	r.OPTIONS("/*any", func(c *gin.Context) {
 		// Set the appropriate CORS headers
 		c.Header("Access-Control-Allow-Origin", "*")
