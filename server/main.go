@@ -232,7 +232,7 @@ func GETMultipleItemsHandler(c *gin.Context) {
 
 	// Convert map values to a list (slice) of items.
 	var itemList []Item
-	for _, item := range items {
+	for _, item := range items { // Iterate over MAP VALUES INSTEAD OF CREATING A NEW SLICE :))
 		itemList = append(itemList, item)
 	}
 	if c.Request.URL.RawQuery == "" {
