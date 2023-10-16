@@ -4,7 +4,7 @@ const port = 8000;
 
 app.use(express.json());  // bodyParser middleware to consume JSON post
 
-const ITEMS = [
+let ITEMS = [
     {
       "id": 0,
       "user_id": "user1234",
@@ -49,7 +49,10 @@ app.post('/item', (req,res) => {
     res.status(201).json(req.body)
   })
 
-
+  app.delete('/item/:id', (req,res) => {
+    ITEMS = ITEMS.filter((item) => item.id != req.params.id)
+    res.status(204).json() 
+  })
 
 
 
