@@ -3,6 +3,25 @@ const app = express();
 const port = 8000;
 
 
+
+const ITEMS = [
+    {
+      "id": 0,
+      "user_id": "user1234",
+      "keywords": [
+        "hammer",
+        "nails",
+        "tools"
+      ],
+      "description": "A hammer and nails set",
+      "image": "https://placekitten.com/200/300",
+      "lat": 51.2798438,
+      "lon": 1.0830275,
+      "date_from": "2023-10-16T22:50:40.567Z",
+      "date_to": "2023-10-16T22:50:40.567Z"
+    }
+  ]
+
 // // Serve Hello World! on '/'
 // app.get('/', (req, res) => {
 //     res.send('Hello World!')
@@ -14,6 +33,18 @@ app.get('/', (req, res) => {
     res.sendFile('index.html', { root: __dirname });
   });
   
+
+// Serve JSON on '/items'
+app.get('/items', (req,res)=>{
+    res.json(ITEMS)
+  })
+
+
+
+
+
+
+
 
 
 
