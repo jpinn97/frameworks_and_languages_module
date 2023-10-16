@@ -1,27 +1,14 @@
 import React from "react";
-import { ItemButton } from "./components/ItemButton";
+import Form from "./components/form";
+import { itemData } from "@/actions/actions";
 
-async function postItem() {}
-
-async function getItem() {
-  const res = await fetch(process.env.API_BACKEND_URL + "/item/1");
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
-
-async function deleteItem() {}
-
-async function getItems() {}
-
-export default function Home() {
+export default async function ItemHome() {
+  const items = await itemData();
   return (
-    <div>
+    <main className="container">
       <h1>Home</h1>
-      <ItemButton />
-    </div>
+      <Form />
+      <ul className="list-dict"></ul>
+    </main>
   );
 }
