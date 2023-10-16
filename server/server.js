@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 8000;
 
-
+app.use(express.json());  // bodyParser middleware to consume JSON post
 
 const ITEMS = [
     {
@@ -41,7 +41,13 @@ app.get('/items', (req,res)=>{
 
 
 
-
+app.post('/item', (req,res) => {
+    console.log("Post to items")
+    // res.json(ITEMS)
+    console.log(req.body)
+    ITEMS.push(req.body)
+    res.status(201).json(req.body)
+  })
 
 
 
