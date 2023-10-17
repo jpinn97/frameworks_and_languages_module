@@ -4,6 +4,10 @@ const port = 8000;
 
 app.use(express.json());  // bodyParser middleware to consume JSON post
 
+// enabling all Cors Request
+const cors = require('cors');
+app.use(cors());
+
 let ITEMS = [
     {
       "id": 0,
@@ -41,13 +45,33 @@ app.get('/items', (req,res)=>{
 
 
 
-app.post('/item', (req,res) => {
-    console.log("Post to items")
-    // res.json(ITEMS)
-    console.log(req.body)
-    ITEMS.push(req.body)
-    res.status(201).json(req.body)
-  })
+
+let currentId = 1;  // Counter for unique IDs
+
+app.post('/item', (req, res) => {
+  const requiredFields = ['user_id', 'keywords', 'description', 'lat', 'lon'];
+
+  // Check if all required fields are present in the request body
+  if (!requiredFields.every(field => req.body.hasOwnProperty(field))) {
+    return res.status(405).json({"Message": "Missing fields...Please investigate"});
+  }
+
+  const timestamp = new Date().toISOString();
+
+  // Generate a unique ID, current timestamp, and add the request body fields
+  const newItem = {
+    id: currentId++,
+    ...req.body,               //  adds user_id, keywords, description, lat, lon, and optionally image
+    date_from: timestamp,
+    date_to: timestamp
+    
+  };
+
+  ITEMS.push(newItem);
+  res.status(201).json(newItem);
+});
+
+
 
   app.delete('/item/:id', (req,res) => {
     ITEMS = ITEMS.filter((item) => item.id != req.params.id)
