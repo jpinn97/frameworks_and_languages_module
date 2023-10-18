@@ -4,6 +4,16 @@ const port = 8000;
 
 app.use(express.json());  // bodyParser middleware to consume JSON post
 
+
+// Error handling middleware for express.json()
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    res.status(405).send('Invalid JSON format or missing fields');
+  } else {
+    next();
+  }
+});
+
 // enabling all Cors Request
 const cors = require('cors');
 app.use(cors());
@@ -45,7 +55,6 @@ app.get('/items', (req,res)=>{
 
 
 
-
 let currentId = 1;  // Counter for unique IDs
 
 app.post('/item', (req, res) => {
@@ -73,10 +82,28 @@ app.post('/item', (req, res) => {
 
 
 
-  app.delete('/item/:id', (req,res) => {
-    ITEMS = ITEMS.filter((item) => item.id != req.params.id)
-    res.status(204).json() 
-  })
+  // app.delete('/item/:id', (req,res) => {
+  //   ITEMS = ITEMS.filter((item) => item.id != req.params.id)
+  //   res.status(204).json() 
+  // })
+
+
+  app.delete('/item/:id', (req, res) => {
+    const itemId = req.params.id;
+    
+    // Check if the item exists
+    const itemExists = ITEMS.some(item => item.id == itemId);
+    
+    if (!itemExists) {
+        return res.status(404).json({ message: "Item not found" });
+    }
+
+    // Remove the item from the ITEMS array
+    ITEMS = ITEMS.filter((item) => item.id != itemId);
+    
+    return res.status(204).json();
+});
+
 
 
 
