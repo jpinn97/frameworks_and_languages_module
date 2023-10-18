@@ -53,7 +53,15 @@ app.get('/items', (req,res)=>{
     res.json(ITEMS)
   })
 
-
+// Serve JSON on '/item/id'
+app.get('/item/:id', (req, res) => {
+  const item = ITEMS.find(i => i.id == req.params.id);
+  if (item) {
+      res.status(200).json(item);  
+  } else {
+      res.status(404).json({ message: 'Item not found' });
+    }
+});
 
 let currentId = 1;  // Counter for unique IDs
 
