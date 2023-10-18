@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -10,7 +11,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/umahmood/haversine"
 )
 
 // Struct for Item schema that is POST to server.
@@ -123,9 +123,8 @@ func PostItemHandler(c *gin.Context) {
 		return
 	}
 
-	currentTime := time.Now().UTC()
-	iso8601Time := currentTime.Format(time.RFC3339Nano)
-	parsedTime, err := time.Parse(time.RFC3339Nano, iso8601Time)
+	currentTime := time.Now().Format("2006-01-02T15:04:05.999999-0000")
+	parsedTime, err := time.Parse("2006-01-02T15:04:05.999999-0000", currentTime)
 	if err != nil {
 		fmt.Println("Error parsing time:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -241,8 +240,8 @@ func GetItemsHandler(c *gin.Context) {
 		lat := c.Query("lat")
 		lon := c.Query("lon")
 		radius := c.DefaultQuery("radius", "5")
-		//date_from := c.Query("date_from")
-		//date_to := c.DefaultQuery("date_to", time.Now().UTC().Format(time.RFC3339Nano))
+		date_from := c.Query("date_from")
+		// date_to := c.DefaultQuery("date_to", time.Now().Format(time.RFC3339))
 
 		/* query algorithm
 
@@ -271,11 +270,11 @@ func GetItemsHandler(c *gin.Context) {
 				itemResults = append(itemResults, items[id])
 				continue
 			}
-			// we wont perform validation on already stored lat/long, do at binding
+			// we wont perform validation on already stored lat/long, do at binding?
 			lat, _ := strconv.ParseFloat(lat, 64)
 			lon, _ := strconv.ParseFloat(lon, 64)
 
-			// We use haversine packaged provided by: https://pkg.go.dev/github.com/umahmood/haversine
+			/* We use haversine packaged provided by: https://pkg.go.dev/github.com/umahmood/haversine
 			// to calculate the distance, i.e our radius
 			a := haversine.Coord{Lat: item.Lat, Lon: item.Lon}
 			b := haversine.Coord{Lat: lat, Lon: lon}
@@ -284,14 +283,26 @@ func GetItemsHandler(c *gin.Context) {
 				itemResults = append(itemResults, items[id])
 				continue
 			}
-			//date_from, _ := time.Parse(time.RFC3339Nano, date_from)
-			//ate_to, _ := time.Parse(time.RFC3339Nano, date_to)
-			/*
-				if item.Date_from.Before(date_from) || (!item.Date_to.IsZero() && item.Date_to.After(date_to)) {
+			*/ // We remove this realistic calculation for a simpler one, remove package.
+
+			// Euclidean distance calculation / two for radius from center.
+			distance := math.Sqrt(math.Pow(lat-item.Lat, 2) + math.Pow(lon-item.Lon, 2))
+			if distance <= radius {
+				itemResults = append(itemResults, items[id])
+				continue
+			}
+
+			// date_to not required?     "2023-10-19T00:21:33.467886"
+			date_from, err := time.Parse("2006-01-02T15:04:05.999999-0000", date_from+"-0000")
+
+			if err == nil {
+				fmt.Println("item.Date_from:", item.Date_from)
+				fmt.Println("date_from:", date_from)
+				if item.Date_from.Before(date_from) {
 					itemResults = append(itemResults, items[id])
 					continue
 				}
-			*/
+			}
 		}
 		c.JSON(http.StatusOK, itemResults)
 	}
