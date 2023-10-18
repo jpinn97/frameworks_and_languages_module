@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -24,23 +25,27 @@ type ItemPOST struct {
 
 // Struct for Item schema that is GET from server.
 type Item struct {
-	ID          int64      `json:"id" binding:"required"`
-	User_ID     string     `json:"user_id" binding:"required"`
-	Keywords    []string   `json:"keywords" binding:"required"`
-	Description string     `json:"description" binding:"required"`
-	Image       *string    `json:"image,omitempty"`
-	Lat         float64    `json:"lat" binding:"required"`
-	Lon         float64    `json:"lon" binding:"required"`
-	Date_from   time.Time  `json:"date_from" binding:"required"`
-	Date_to     *time.Time `json:"date_to,omitempty"`
+	ID          int64               `json:"id" binding:"required"`
+	User_ID     string              `json:"user_id" binding:"required"`
+	Keywords    map[string]struct{} `json:"keywords" binding:"required"`
+	Description string              `json:"description" binding:"required"`
+	Image       *string             `json:"image,omitempty"`
+	Lat         float64             `json:"lat" binding:"required"`
+	Lon         float64             `json:"lon" binding:"required"`
+	Date_from   time.Time           `json:"date_from" binding:"required"`
+	Date_to     *time.Time          `json:"date_to,omitempty"`
 }
 
 // Converts an item recieved from POST to the struct that can be stored and returned later via GET.
 func ConvertItemPOSTToItems(itemPOST ItemPOST, id int64, dateFrom time.Time, dateTo *time.Time) Item {
+	keywordsMap := make(map[string]struct{})
+	for _, keyword := range itemPOST.Keywords {
+		keywordsMap[keyword] = struct{}{}
+	}
 	return Item{
 		ID:          id,
 		User_ID:     itemPOST.User_ID,
-		Keywords:    itemPOST.Keywords,
+		Keywords:    keywordsMap,
 		Description: itemPOST.Description,
 		Image:       itemPOST.Image,
 		Lat:         itemPOST.Lat,
@@ -82,16 +87,16 @@ func main() {
 	r.GET("/", RootHandler)
 
 	// Define route handler for POST a single item.
-	r.POST("/item", POSTSingleItemHandler)
+	r.POST("/item", PostItemHandler)
 
 	// Define route handler for GET a single item.
-	r.GET("/item/:itemId", GETSingleItemHandler)
+	r.GET("/item/:itemId", GetItemHandler)
 
 	// Define route handler for DELETE a single item.
-	r.DELETE("/item/:itemId", DELETESingleItemHandler)
+	r.DELETE("/item/:itemId", DeleteItemHandler)
 
 	// Define route handler for GET multiple items.
-	r.GET("/items", GETMultipleItemsHandler)
+	r.GET("/items", GetItemsHandler)
 
 	// Publish on port 8000.
 	r.Run(":8000")
@@ -105,7 +110,7 @@ func RootHandler(c *gin.Context) {
 	})
 }
 
-func POSTSingleItemHandler(c *gin.Context) {
+func PostItemHandler(c *gin.Context) {
 	// Will attempt to bind to ItemPOST struct.
 	var ReceivedData ItemPOST
 
@@ -142,7 +147,7 @@ func POSTSingleItemHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, StoredData)
 }
 
-func GETSingleItemHandler(c *gin.Context) {
+func GetItemHandler(c *gin.Context) {
 	itemId := c.Param("itemId") // Retrive itemId from request.
 
 	// Convert the itemID to an integer
@@ -171,7 +176,7 @@ func GETSingleItemHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func DELETESingleItemHandler(c *gin.Context) {
+func DeleteItemHandler(c *gin.Context) {
 	itemId := c.Param("itemId") // Retrive itemId from request.
 
 	// Convert the itemID to an integer
@@ -204,35 +209,25 @@ func DELETESingleItemHandler(c *gin.Context) {
 /*
 As Go doesn't contains.. this built-in, inspired by: https://stackoverflow.com/a/10485970
 */
-func contains(itemKeywords []string, arrayQueryKeywords []string) bool {
-	// Create a map to store the itemKeywords for faster lookup
-	keywordMap := make(map[string]bool)
-
-	// Populate the map with itemKeywords
-	for _, keyword := range itemKeywords {
-		keywordMap[keyword] = true
-	}
-
+func Contains(itemKeywords map[string]struct{}, queryKeywords []string) bool {
 	// Check if all query keywords are present in itemKeywords
-	for _, queryKeyword := range arrayQueryKeywords {
-		if _, found := keywordMap[queryKeyword]; !found {
-			// If a query keyword is not found in itemKeywords, return false
+	for _, queryKeyword := range queryKeywords {
+		if _, exists := itemKeywords[queryKeyword]; !exists {
 			return false
 		}
 	}
-
 	// All query keywords were found in itemKeywords
 	return true
 }
 
-func GETMultipleItemsHandler(c *gin.Context) {
+func GetItemsHandler(c *gin.Context) {
 
 	itemsMu.RLock()
 	defer itemsMu.RUnlock()
 
 	// Convert map values to a list (slice) of items.
 	var itemList []Item
-	for _, item := range items { // Iterate over MAP VALUES INSTEAD OF CREATING A NEW SLICE :))
+	for _, item := range items { // Go has no builtin map.values() function, so we iterate over the map as is the idiomatic Go way.
 		itemList = append(itemList, item)
 	}
 	if c.Request.URL.RawQuery == "" {
@@ -241,12 +236,13 @@ func GETMultipleItemsHandler(c *gin.Context) {
 	} else {
 		// Retrieve and process query parameters if they exist.
 		user_id := c.Query("user_id")
-		keywords := c.QueryArray("keywords")
+		keywordsParam := c.Query("keywords")
+		keywords := strings.Split(keywordsParam, ",")
 		lat := c.Query("lat")
 		lon := c.Query("lon")
 		radius := c.DefaultQuery("radius", "5")
-		date_from := c.Query("date_from")
-		date_to := c.DefaultQuery("date_to", time.Now().UTC().Format(time.RFC3339Nano))
+		//date_from := c.Query("date_from")
+		//date_to := c.DefaultQuery("date_to", time.Now().UTC().Format(time.RFC3339Nano))
 
 		/* query algorithm
 
@@ -261,21 +257,18 @@ func GETMultipleItemsHandler(c *gin.Context) {
 
 		itemResults := []Item{}
 
-		for key, val := range items {
-			println(val.ID)
+		for id, item := range items {
 			radius, err := strconv.ParseFloat(radius, 64)
 			if err != nil {
 				c.JSON(http.StatusBadRequest, nil)
 				return
 			}
-			if val.User_ID == user_id {
-				itemResults = append(itemResults, items[key])
+			if item.User_ID == user_id {
+				itemResults = append(itemResults, items[id])
 				continue
 			}
-			if contains(val.Keywords, keywords) {
-				println(val.Keywords)
-				println(keywords)
-				itemResults = append(itemResults, items[key])
+			if Contains(item.Keywords, keywords) {
+				itemResults = append(itemResults, items[id])
 				continue
 			}
 			// we wont perform validation on already stored lat/long, do at binding
@@ -284,20 +277,21 @@ func GETMultipleItemsHandler(c *gin.Context) {
 
 			// We use haversine packaged provided by: https://pkg.go.dev/github.com/umahmood/haversine
 			// to calculate the distance, i.e our radius
-			a := haversine.Coord{Lat: val.Lat, Lon: val.Lon}
+			a := haversine.Coord{Lat: item.Lat, Lon: item.Lon}
 			b := haversine.Coord{Lat: lat, Lon: lon}
 			_, km := haversine.Distance(a, b)
 			if km <= radius {
-				itemResults = append(itemResults, items[key])
+				itemResults = append(itemResults, items[id])
 				continue
 			}
-			date_from, _ := time.Parse(time.RFC3339Nano, date_from)
-			date_to, _ := time.Parse(time.RFC3339Nano, date_to)
-
-			if val.Date_from.Before(date_from) || (!val.Date_to.IsZero() && val.Date_to.After(date_to)) {
-				itemResults = append(itemResults, items[key])
-				continue
-			}
+			//date_from, _ := time.Parse(time.RFC3339Nano, date_from)
+			//ate_to, _ := time.Parse(time.RFC3339Nano, date_to)
+			/*
+				if item.Date_from.Before(date_from) || (!item.Date_to.IsZero() && item.Date_to.After(date_to)) {
+					itemResults = append(itemResults, items[id])
+					continue
+				}
+			*/
 		}
 		c.JSON(http.StatusOK, itemResults)
 	}

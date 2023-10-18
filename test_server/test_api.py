@@ -29,17 +29,16 @@ def isiterable(iterable):
         return True
 
 
-
 @pytest.fixture
 def new_item(ENDPOINT):
     ITEM = {
-        'user_id': "user1234",
-        'keywords': ["hammer", "nails", "tools"],
+        "user_id": "user1234",
+        "keywords": ["hammer", "nails", "tools"],
         "description": "A hammer and nails set",
-        "lat": (random.random() * (70*2)) - 70,
-        "lon": (random.random() * (180*2)) - 180,
+        "lat": (random.random() * (70 * 2)) - 70,
+        "lon": (random.random() * (180 * 2)) - 180,
     }
-    response = requests.post(ENDPOINT + '/item', json=ITEM)
+    response = requests.post(ENDPOINT + "/item", json=ITEM)
     yield response.json()
 
 
@@ -56,16 +55,18 @@ def test_root(ENDPOINT):
     """
     response = requests.get(ENDPOINT)
     assert response.status_code == 200
-    assert 'text/html' in response.headers['Content-type']
+    assert "text/html" in response.headers["Content-type"]
     assert response.text
+
 
 def test_item_post_405(ENDPOINT):
     ITEM = {
         "a": 1,
         "b": 2,
     }
-    response = requests.post(ENDPOINT + '/item', json=ITEM)
+    response = requests.post(ENDPOINT + "/item", json=ITEM)
     assert response.status_code == 405
+
 
 def test_item_post_201(ENDPOINT):
     """
@@ -73,16 +74,17 @@ def test_item_post_201(ENDPOINT):
     The created object must have an id field
     """
     ITEM = {
-        'user_id': "user1234",
-        'keywords': ["hammer", "nails", "tools"],
+        "user_id": "user1234",
+        "keywords": ["hammer", "nails", "tools"],
         "description": "A hammer and nails set. In canterbury",
         "lat": 51.2798438,
         "lon": 1.0830275,
     }
-    response = requests.post(f'{ENDPOINT}/item', json=ITEM)
+    response = requests.post(f"{ENDPOINT}/item", json=ITEM)
     assert response.status_code == 201
-    assert 'application/json' in response.headers.get('Content-type')
-    assert response.json().get('id')
+    assert "application/json" in response.headers.get("Content-type")
+    assert response.json().get("id")
+
 
 def test_item_get_200(ENDPOINT, new_item):
     """
@@ -90,6 +92,8 @@ def test_item_get_200(ENDPOINT, new_item):
     """
     response = requests.get(f"{ENDPOINT}/item/{new_item['id']}")
     assert response.status_code == 200
+
+
 def test_item_get_200_fields(ENDPOINT, new_item):
     """
     When we GET an individual item, it should have all of the fields that were returned by the creation POST
@@ -98,12 +102,14 @@ def test_item_get_200_fields(ENDPOINT, new_item):
     assert response.status_code == 200
     assert response.json() == new_item
 
+
 def test_item_get_404(ENDPOINT):
     """
     GETing an item id that is not in our dataset should return a 404
     """
     response = requests.get(f"{ENDPOINT}/item/99999999")
     assert response.status_code == 404
+
 
 def test_items_get_200(ENDPOINT):
     """
@@ -113,6 +119,8 @@ def test_items_get_200(ENDPOINT):
     assert response.status_code == 200
     items = response.json()
     assert isinstance(items, list)
+
+
 def test_items_get_200_fields(ENDPOINT, new_item):
     """
     After POSTing an item, a GET to /items should have our new item as a last entry of the list/array
@@ -122,6 +130,7 @@ def test_items_get_200_fields(ENDPOINT, new_item):
     items = response.json()
     assert items[-1] == new_item
 
+
 def test_item_delete_404(ENDPOINT):
     """
     DELETEing an item that does not exist is a 404
@@ -129,10 +138,11 @@ def test_item_delete_404(ENDPOINT):
     response = requests.delete(f"{ENDPOINT}/item/99999999")
     assert response.status_code == 404
 
+
 def test_item_delete(ENDPOINT, new_item):
     """
     create an item with POST
-    GET the created  item to see if it exists 
+    GET the created  item to see if it exists
     DELETE the item
     GET the item_id again and it should not exist
     """
@@ -144,51 +154,64 @@ def test_item_delete(ENDPOINT, new_item):
     response = requests.get(url)
     response.status_code == 404
 
+
 def test_root_options_cors_headers(ENDPOINT):
     """
     Server must respond to OPTIONS request for use with real browser
     """
     response = requests.options(ENDPOINT)
     assert response.status_code == 204
-    assert 'POST' in response.headers['Access-Control-Allow-Methods']
-    #assert 'Content-Type' in response.headers['Access-Control-Allow-Headers']  # Investigate why this was needed - this is not part of express.js default CORS handling? BLAME?
+    assert "POST" in response.headers["Access-Control-Allow-Methods"]
+    # assert 'Content-Type' in response.headers['Access-Control-Allow-Headers']  # Investigate why this was needed - this is not part of express.js default CORS handling? BLAME?
+
 
 def test_items_get_cors_headers(ENDPOINT):
     """
     OPTIONS request to an endpoint should contain a CORS header (preferably allowing all domains `*`)
     """
     response = requests.options(f"{ENDPOINT}/items")
-    assert response.headers['Access-Control-Allow-Origin'], 'CORS Headers must be set - preferably to * for this learning exercise'
+    assert response.headers[
+        "Access-Control-Allow-Origin"
+    ], "CORS Headers must be set - preferably to * for this learning exercise"
 
 
 # Advanced Tests ---------------------------------------------------------------
 
+
 @pytest.fixture
 def item_factory(ENDPOINT):
     _item_ids = set()
+
     def _item_factory(**kwargs):
         ITEM = {
-            'user_id': "user1234",
-            'keywords': ["hammer", "nails", "tools"],
+            "user_id": "user1234",
+            "keywords": ["hammer", "nails", "tools"],
             "description": "A hammer and nails set",
-            "lat": (random.random() * (70*2)) - 70,
-            "lon": (random.random() * (180*2)) - 180,
+            "lat": (random.random() * (70 * 2)) - 70,
+            "lon": (random.random() * (180 * 2)) - 180,
             **kwargs,
         }
-        response = requests.post(ENDPOINT + '/item', json=ITEM)
+        response = requests.post(ENDPOINT + "/item", json=ITEM)
         item = response.json()
-        _item_ids.add(item['id'])
+        _item_ids.add(item["id"])
         return item
+
     yield _item_factory
     for _id in _item_ids:
         response = requests.delete(ENDPOINT + f"/item/{_id}")
         assert response.status_code == 204
 
+
 @pytest.fixture
 def get_items(ENDPOINT):
     def _get_items(**kwargs):
-        kwargs = {k:v if not isiterable(v) else ','.join(v) for k,v in kwargs.items()}  # encode arrays as comma separated
-        return requests.get(ENDPOINT + f"/items?" + urllib.parse.urlencode(kwargs)).json()
+        kwargs = {
+            k: v if not isiterable(v) else ",".join(v) for k, v in kwargs.items()
+        }  # encode arrays as comma separated
+        return requests.get(
+            ENDPOINT + f"/items?" + urllib.parse.urlencode(kwargs)
+        ).json()
+
     return _get_items
 
 
@@ -198,9 +221,11 @@ def test_item_contains_valid_iso_date_from(ENDPOINT, item_factory):
     """
     new_item = item_factory()
     response = requests.get(f"{ENDPOINT}/item/{new_item['id']}")
-    date_from = datetime.datetime.fromisoformat(response.json()['date_from'])
+    date_from = datetime.datetime.fromisoformat(response.json()["date_from"])
     assert date_from
-    assert date_from.date() == datetime.datetime.now().date(), "an item that has just been created should have today's date"
+    assert (
+        date_from.date() == datetime.datetime.now().date()
+    ), "an item that has just been created should have today's date"
 
 
 def test_items_contains_from_post(ENDPOINT, item_factory):
@@ -209,41 +234,43 @@ def test_items_contains_from_post(ENDPOINT, item_factory):
     """
     new_item = item_factory()
     response = requests.get(ENDPOINT + f"/items")
-    item_ids = tuple(item['id'] for item in response.json())
-    assert new_item['id'] in item_ids
+    item_ids = tuple(item["id"] for item in response.json())
+    assert new_item["id"] in item_ids
 
 
 def test_ids_generated_are_unique(ENDPOINT, new_item, get_items, item_factory):
     """
     It is expected that ID's are unique. Most systems expect to not reuse ID's.
     """
-    ids = tuple(item['id'] for item in get_items())
+    ids = tuple(item["id"] for item in get_items())
     for id in ids:  # DELETE all items
         requests.delete(f"{ENDPOINT}/item/{id}")
     new_item = item_factory()
-    assert new_item['id'] not in ids, 'id fields should be unique and not reused from previous deleted items'
+    assert (
+        new_item["id"] not in ids
+    ), "id fields should be unique and not reused from previous deleted items"
 
 
-@pytest.mark.skip(reason="optional functionality not used by client")
+# @pytest.mark.skip(reason="optional functionality not used by client")
 def test_items_filter_username(get_items, item_factory):
     for i in range(6):
         item_factory(user_id=f"user{i//2}")
-    
-    items = get_items(user_id='user1')
+
+    items = get_items(user_id="user1")
     assert len(items) == 2, "There should be items posted by user1"
 
 
-@pytest.mark.skip(reason="optional functionality not used by client")
+# @pytest.mark.skip(reason="optional functionality not used by client")
 def test_items_filter_location(get_items, item_factory):
     # Create mock items in line
-    for lat in (100+(i*0.1) for i in range(6)):
+    for lat in (100 + (i * 0.1) for i in range(6)):
         item_factory(lat=lat, lon=20.0)
-    
+
     items = get_items(lat=100, lon=20.0, radius=0.21)
     assert len(items) == 3, "should return lat=100 + lat=100.1 + lat=100.2"
 
 
-@pytest.mark.skip(reason="optional functionality not used by client")
+# @pytest.mark.skip(reason="optional functionality not used by client")
 def test_items_filter_date_from(get_items, item_factory):
     for i in range(2):
         item_factory()
@@ -254,17 +281,17 @@ def test_items_filter_date_from(get_items, item_factory):
     assert len(items) == 2, "There should be items posted since the date_from"
 
 
-@pytest.mark.skip(reason="optional functionality not used by client")
+# @pytest.mark.skip(reason="optional functionality not used by client")
 def test_items_filter_keywords(get_items, item_factory):
     item_factory(keywords=("test1", "test2"))
     item_factory(keywords=("test2", "test3"))
     item_factory(keywords=("test1", "test2", "test3"))
 
-    items = get_items(keywords=('test1'))
+    items = get_items(keywords=("test1"))
     assert len(items) == 2
-    items = get_items(keywords=('test2'))
+    items = get_items(keywords=("test2"))
     assert len(items) == 3
-    items = get_items(keywords=('test1','test2'))
+    items = get_items(keywords=("test1", "test2"))
     assert len(items) == 2
-    items = get_items(keywords=('test1','test2', 'test3'))
+    items = get_items(keywords=("test1", "test2", "test3"))
     assert len(items) == 1

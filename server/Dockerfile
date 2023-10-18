@@ -1,20 +1,15 @@
-# Use the latest base image with Go preinstalled
-FROM golang:1.21.1-alpine
+# Build stage
+FROM golang:1.21.1-alpine as builder
+WORKDIR /build
+COPY . ./
+RUN go mod download
 
-# Set the working directory inside the container
+# Statically linked binary, so we can run it in a scratch container with no external dependencies, target Linux
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./main .
+
+# Final minimal container using empty scratch image
+FROM scratch
 WORKDIR /app
-
-# Copy the local code to the container's working directory
-COPY . .
-
-# Install the dependencies
-RUN go mod tidy
-
-# Build the Go application
-RUN go build -o main.go .
-
-# Expose a port (if your Go application listens on a specific port)
+COPY --from=builder /build/main ./
 EXPOSE 8000
-
-# Command to run the Go application
-CMD ["./main.go"]
+ENTRYPOINT ["./main"]

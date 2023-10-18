@@ -12,10 +12,10 @@
             "args": [
                 "${workspaceFolder}",
                 "-k",
-                "test_items_get_200_fields"
+                "test_items_filter_keywords"
             ],
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": false
         },
         {
             "name": "Launch Package",
