@@ -12,7 +12,7 @@
             "args": [
                 "${workspaceFolder}",
                 "-k",
-                "test_items_filter_keywords"
+                "test_items_filter_location"
             ],
             "console": "integratedTerminal",
             "justMyCode": false

@@ -280,7 +280,7 @@ func GetItemsHandler(c *gin.Context) {
 			a := haversine.Coord{Lat: item.Lat, Lon: item.Lon}
 			b := haversine.Coord{Lat: lat, Lon: lon}
 			_, km := haversine.Distance(a, b)
-			if km <= radius {
+			if km/100 <= radius {
 				itemResults = append(itemResults, items[id])
 				continue
 			}
