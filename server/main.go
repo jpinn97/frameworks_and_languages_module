@@ -1,6 +1,8 @@
 package main
 
 import (
+	"embed"
+	_ "embed"
 	"fmt"
 	"math"
 	"net/http"
@@ -67,6 +69,9 @@ func init() { // initialize map
 
 var idCounter int64 = 0 // initialise counter
 
+//go:embed README.md
+var readme embed.FS
+
 func main() {
 	r := gin.Default()
 
@@ -104,10 +109,18 @@ func main() {
 
 // Handles HTTP requests to root.
 func RootHandler(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", gin.H{
-		"title": "Root Page",
-		"body":  "Hello User! This is the root page.",
-	})
+	// Read README.md from embedded filesystem.
+	readmeBytes, err := readme.ReadFile("README.md")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":       "Internal Server Error",
+			"description": "Something went wrong :(",
+		})
+		return
+	}
+
+	// Write README.md to response.
+	c.Data(http.StatusOK, "text/html; charset=utf-8", readmeBytes)
 }
 
 func PostItemHandler(c *gin.Context) {
