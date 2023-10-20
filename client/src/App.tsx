@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import apiService from "./api_service.ts";
 import { Item } from "./api_service.ts";
+import ListItem from "./ListItem.tsx";
 
 function App() {
   const [items, setItems] = useState<Item[]>([]);
@@ -32,7 +33,7 @@ function App() {
   return (
     <ul>
       {items.map((item) => (
-        <li key={item.id}>{item.description}</li>
+        <ListItem key={item.id} item={item} />
       ))}
     </ul>
   );
