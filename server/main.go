@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	_ "embed"
 	"fmt"
 	"math"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -75,15 +75,22 @@ var readme embed.FS
 func main() {
 	r := gin.Default()
 
-	// Allow CORS using middleware package??? https://github.com/gin-contrib/cors
+	// OPTIONS request handler
 	r.OPTIONS("/*any", func(c *gin.Context) {
 		// Set the appropriate CORS headers
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
+		c.Header("Access-Control-Allow-Headers", "Content-Type")
 
 		// Respond with a 204 status code
 		c.Status(204)
 	})
+	// CORS using gin-contrib/cors
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"POST, GET, OPTIONS, DELETE"},
+		AllowHeaders:    []string{"Content-Type"},
+	}))
 
 	/* Resources to build these functions is from
 	https://go.dev/doc/tutorial/web-service-gin */

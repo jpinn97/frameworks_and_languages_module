@@ -12,7 +12,7 @@
             "args": [
                 "${workspaceFolder}",
                 "-k",
-                "test_item_contains_valid_iso_date_from"
+                "test_item_post_201"
             ],
             "console": "integratedTerminal",
             "justMyCode": false
