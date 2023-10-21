@@ -16,7 +16,8 @@
             <input v-model="item.lat" name="lat" placeholder="latitude">
             <input v-model="item.keywords" name="keywords" placeholder="keywords">
             <input v-model="item.image" name="image" value="http://placekitten.com/100/100" placeholder="image url">
-            <textarea v-model="item.description" name="description" placeholder="description"></textarea>     
+            <textarea v-model="item.description" name="description" placeholder="description"></textarea>  
+            <button data-action="addItem">Create Item</button>   
         </form>
         {{item.user_id}} - {{item.lon}} - {{item.lat}} - {{item.keywords}} - {{item.image}} - {{item.description}}
         
@@ -54,5 +55,19 @@
                 items: []  // initializing as an empty array for all items
             }
         },
+        methods: {
+            addItem() {
+                this.items.push(this.item);
+                this.item = {
+                    user_id: '',
+                    lon: '',
+                    lat: '',
+                    keywords: '',
+                    image: '',
+                    description: '',
+                };
+            },
+        
+        }
     }).mount('#app');
 </script>
