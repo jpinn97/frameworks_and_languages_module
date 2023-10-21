@@ -1,0 +1,58 @@
+<script type="importmap">
+    {
+      "imports": {
+        "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+      }
+    }
+</script>
+
+<div id="app">
+    {{ message }}
+   
+    <h2>Create Item</h2>    
+        <form @submit.prevent="addItem">
+            <input v-model="item.user_id" name="user_id" placeholder="user_id">
+            <input v-model="item.lon" name="lon" placeholder="longitude"> 
+            <input v-model="item.lat" name="lat" placeholder="latitude">
+            <input v-model="item.keywords" name="keywords" placeholder="keywords">
+            <input v-model="item.image" name="image" value="http://placekitten.com/100/100" placeholder="image url">
+            <textarea v-model="item.description" name="description" placeholder="description"></textarea>     
+        </form>
+        {{item.user_id}} - {{item.lon}} - {{item.lat}} - {{item.keywords}} - {{item.image}} - {{item.description}}
+        
+        <h2>Items Created</h2>
+        
+        <ul>
+            <li v-for="item in items">
+                <span data-field="user_id">{{item.user_id}}</span>
+                <span data-field="lon">{{item.lon}}</span>
+                <span data-field="lat">{{item.lat}}</span>
+                <span data-field="keywords">{{item.keywords}}</span>
+                <img :src="item.image">
+                <span data-field="description">{{item.description}}</span>              
+                <button data-action="delete" @click="deleteItem(item.id)">Delete</button>
+            </li>
+        </ul>
+</div>
+
+<script type="module">
+    //  'vue' is use for import source since it's defined  in the importmap.
+    import { createApp } from 'vue';
+
+    createApp({
+        data() {
+            return {
+                message: 'Hello ooooo Vue!',
+                item: {
+                    user_id: '',
+                    lon: '',
+                    lat: '',
+                    keywords: '',
+                    image: '',
+                    description: '',
+                },
+                items: []  // initializing as an empty array for all items
+            }
+        },
+    }).mount('#app');
+</script>
