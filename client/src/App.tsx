@@ -24,6 +24,17 @@ function App() {
     }
   };
 
+  const onDeleteItem = async (id: number) => {
+    try {
+      await apiService.deleteItem(id);
+      console.log("I just deleted an item!");
+      await getItems();
+      console.log("I just refreshed the items!");
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getItems();
   }, []);
@@ -35,9 +46,10 @@ function App() {
     <div className="flex flex-row">
       <div>
         <ol>
-          {items.map((item) => (
-            <ListItem key={item.id} item={item} />
-          ))}
+          {items &&
+            items.map((item) => (
+              <ListItem key={item.id} onDeleteItem={onDeleteItem} item={item} />
+            ))}
         </ol>
       </div>
       <div>
