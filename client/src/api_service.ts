@@ -1,18 +1,16 @@
 const url = "http://localhost:8000";
 
 export interface Item {
-  id: number;
+  id?: number;
   user_id: string;
   keywords: string[];
   description: string;
   image: string;
   lat: number;
   lon: number;
-  date_from: string;
-  date_to: string;
 }
 
-async function handleApiRequest<T>(
+async function handleGetApiRequest<T>(
   endpoint: string,
   method = "GET"
 ): Promise<T> {
@@ -33,25 +31,40 @@ async function handleApiRequest<T>(
 }
 
 async function getItem<T>(id: string): Promise<T> {
-  return handleApiRequest(`/item/${id}`);
+  return handleGetApiRequest(`/item/${id}`);
 }
 
 async function getItems(): Promise<Item[]> {
-  return handleApiRequest<Item[]>("/items");
+  return handleGetApiRequest<Item[]>("/items");
 }
 
+/*
 async function deleteItem<T>(id: string): Promise<T> {
   return handleApiRequest(`/item/${id}`, "DELETE");
 }
+*/
 
-async function postItem<T>(): Promise<T> {
-  return handleApiRequest<T>("/item", "POST");
+async function postItem<T>(formData: Item): Promise<T> {
+  const fullUrl = `${url}/item`;
+  const response = await fetch(fullUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return (await response.json()) as T;
 }
 
 const apiService = {
   getItem,
   getItems,
-  deleteItem,
+  //deleteItem,
   postItem,
 };
 

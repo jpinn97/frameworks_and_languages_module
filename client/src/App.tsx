@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import apiService from "./api_service.ts";
 import { Item } from "./api_service.ts";
 import ListItem from "./ListItem.tsx";
+import PostItemForm from "./PostItemForm.tsx";
 
 function App() {
   const [items, setItems] = useState<Item[]>([]);
@@ -31,11 +32,26 @@ function App() {
     return <h1>Loading...</h1>;
   }
   return (
-    <ul>
-      {items.map((item) => (
-        <ListItem key={item.id} item={item} />
-      ))}
-    </ul>
+    <div className="flex flex-row">
+      <div>
+        <ol>
+          {items.map((item) => (
+            <ListItem key={item.id} item={item} />
+          ))}
+        </ol>
+      </div>
+      <div>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={getItems}
+        >
+          Refresh
+        </button>
+      </div>
+      <div>
+        <PostItemForm onSubmit={getItems} />
+      </div>
+    </div>
   );
 }
 

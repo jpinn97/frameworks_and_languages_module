@@ -12,8 +12,9 @@ function ListItem({ item }: ListItemProps) {
       Description: {item.description}
       <br />
       <ul>
+        Keywords:
         {Object.keys(item.keywords).map((keyword, index) => (
-          <li key={index}>{keyword}</li>
+          <li key={index}>- {keyword}</li>
         ))}
       </ul>
       Image: {item.image}
