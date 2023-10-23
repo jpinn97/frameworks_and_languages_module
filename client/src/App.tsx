@@ -43,14 +43,14 @@ function App() {
     return <h1>Loading...</h1>;
   }
   return (
-    <div className="flex flex-row">
+    <div className="container mx-auto">
       <div>
-        <ol>
+        <ul>
           {items &&
             items.map((item) => (
               <ListItem key={item.id} onDeleteItem={onDeleteItem} item={item} />
             ))}
-        </ol>
+        </ul>
       </div>
       <div>
         <button

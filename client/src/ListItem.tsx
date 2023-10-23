@@ -7,19 +7,19 @@ type ListItemProps = {
 
 function ListItem({ onDeleteItem, item }: ListItemProps) {
   return (
-    <div>
+    <div className="border-soiid border-2 border-black max-w-max">
       <li key={item.id}>
         User ID: {item.user_id}
         <br />
         Description: {item.description}
         <br />
         <ul>
-          Keywords:
+          Keywords:{" "}
           {Object.keys(item.keywords).map((keyword, index) => (
             <li key={index}>- {keyword}</li>
           ))}
         </ul>
-        Image: {item.image}
+        <img className="object-scale-down h-48 w-96" src={item.image}></img>
         <br />
         Latitude: {item.lat}
         <br />

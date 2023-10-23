@@ -4,6 +4,7 @@ import { Item } from "./api_service.ts";
 
 function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
   const [formData, setFormData] = useState<Item>({
+    id: 0,
     user_id: "",
     keywords: [],
     description: "",
@@ -111,7 +112,12 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
         />
       </label>
       <br />
-      <button type="submit">Submit</button>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
   );
 }
