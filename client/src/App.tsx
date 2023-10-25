@@ -47,11 +47,11 @@ function App() {
   return (
     <div>
       <NavigationBar />
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-screen-xl flex flex-wrap items-top justify-between mx-auto p-4">
         <div>
           <PostItemForm onSubmit={getItems} />
         </div>
-        <div className="h-64 overflow-y-scroll">
+        <div className="overflow-y-hidden">
           <ul className="list-inside list-disc p-4">
             {items &&
               items.map((item) => (

@@ -44,12 +44,22 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    console.log(name, value);
+    // Check if the input field corresponds to keywords
+    if (name === "keywords") {
+      // Normalize and split keywords based on various delimiters
+      const normalizedInput: string[] = normalizeAndSplitKeywords(value);
+      setFormData({ ...formData, [name]: normalizedInput });
+    } else {
+      // Handle other input fields as usual
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleKeywordsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    setFormData({ ...formData, keywords: value.split(",") });
+  // Function to normalize and split keywords based on various delimiters
+  const normalizeAndSplitKeywords = (input: string) => {
+    const delimiters = /[/,;|.\s]+/;
+    return input.split(delimiters);
   };
 
   return (
@@ -77,8 +87,8 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
         Keywords:
         <textarea
           name="keywords"
-          value={formData.keywords.join(",")}
-          onChange={handleKeywordsChange}
+          value={formData.keywords}
+          onChange={handleInputChange}
         />
       </label>
       <br />
