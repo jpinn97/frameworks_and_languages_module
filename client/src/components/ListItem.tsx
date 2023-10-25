@@ -1,4 +1,4 @@
-import { Item } from "./api_service.ts";
+import { Item } from "../api_service.ts";
 
 type ListItemProps = {
   item: Item;

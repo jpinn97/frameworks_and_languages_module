@@ -1,6 +1,5 @@
 import { useState } from "react";
-import apiService from "./api_service.ts";
-import { Item } from "./api_service.ts";
+import apiService, { Item } from "../api_service.ts";
 
 function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
   const [formData, setFormData] = useState<Item>({

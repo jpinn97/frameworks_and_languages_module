@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 
 import apiService from "./api_service.ts";
 import { Item } from "./api_service.ts";
-import ListItem from "./ListItem.tsx";
-import PostItemForm from "./PostItemForm.tsx";
+import ListItem from "./components/ListItem.tsx";
+import PostItemForm from "./components/PostItemForm.tsx";
+import QueryItemsForm from "./components/QueryItemsForm.tsx";
 
 function App() {
   const [items, setItems] = useState<Item[]>([]);
@@ -43,14 +44,9 @@ function App() {
     return <h1>Loading...</h1>;
   }
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto flex flex-row">
       <div>
-        <ul>
-          {items &&
-            items.map((item) => (
-              <ListItem key={item.id} onDeleteItem={onDeleteItem} item={item} />
-            ))}
-        </ul>
+        <PostItemForm onSubmit={getItems} />
       </div>
       <div>
         <button
@@ -61,7 +57,15 @@ function App() {
         </button>
       </div>
       <div>
-        <PostItemForm onSubmit={getItems} />
+        <ul>
+          {items &&
+            items.map((item) => (
+              <ListItem key={item.id} onDeleteItem={onDeleteItem} item={item} />
+            ))}
+        </ul>
+      </div>
+      <div>
+        <QueryItemsForm />
       </div>
     </div>
   );

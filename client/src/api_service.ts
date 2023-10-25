@@ -74,11 +74,15 @@ async function postItem<T>(formData: Item): Promise<T> {
   return (await response.json()) as T;
 }
 
+async function queryItems(queryString: string): Promise<Item[]> {
+  return handleGetApiRequest<Item[]>("/items?api" + queryString);
+}
 const apiService = {
   getItem,
   getItems,
   deleteItem,
   postItem,
+  queryItems,
 };
 
 export default apiService;
