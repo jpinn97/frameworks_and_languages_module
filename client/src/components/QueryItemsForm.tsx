@@ -1,6 +1,10 @@
 import apiService from "../api_service.ts";
 
-function QueryItemsForm() {
+interface QueryItemsFormProps {
+  getItems: () => Promise<void>;
+}
+
+function QueryItemsForm({ getItems }: QueryItemsFormProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -49,12 +53,12 @@ function QueryItemsForm() {
       <br />
       <label>
         Date From:
-        <input type="datetime-local" name="lon" />
+        <input type="datetime-local" name="date_from" />
       </label>
       <br />
       <label>
         Date To:
-        <input type="datetime-local" name="lon" />
+        <input type="datetime-local" name="date_to" />
       </label>
       <br />
       <button
@@ -62,6 +66,13 @@ function QueryItemsForm() {
         type="submit"
       >
         Search
+      </button>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        type="button"
+        onClick={getItems}
+      >
+        Refresh
       </button>
     </form>
   );

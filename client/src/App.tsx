@@ -2,11 +2,12 @@ import "./App.css";
 
 import { useState, useEffect } from "react";
 
-import apiService from "./api_service.ts";
-import { Item } from "./api_service.ts";
-import ListItem from "./components/ListItem.tsx";
-import PostItemForm from "./components/PostItemForm.tsx";
-import QueryItemsForm from "./components/QueryItemsForm.tsx";
+import apiService from "./api_service";
+import { Item } from "./api_service";
+import ListItem from "./components/ListItem";
+import PostItemForm from "./components/PostItemForm";
+import QueryItemsForm from "./components/QueryItemsForm";
+import NavigationBar from "./components/NavigationBar";
 
 function App() {
   const [items, setItems] = useState<Item[]>([]);
@@ -44,28 +45,27 @@ function App() {
     return <h1>Loading...</h1>;
   }
   return (
-    <div className="container mx-auto flex flex-row">
-      <div>
-        <PostItemForm onSubmit={getItems} />
-      </div>
-      <div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={getItems}
-        >
-          Refresh
-        </button>
-      </div>
-      <div>
-        <ul>
-          {items &&
-            items.map((item) => (
-              <ListItem key={item.id} onDeleteItem={onDeleteItem} item={item} />
-            ))}
-        </ul>
-      </div>
-      <div>
-        <QueryItemsForm />
+    <div>
+      <NavigationBar />
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div>
+          <PostItemForm onSubmit={getItems} />
+        </div>
+        <div className="h-64 overflow-y-scroll">
+          <ul className="list-inside list-disc p-4">
+            {items &&
+              items.map((item) => (
+                <ListItem
+                  key={item.id}
+                  onDeleteItem={onDeleteItem}
+                  item={item}
+                />
+              ))}
+          </ul>
+        </div>
+        <div>
+          <QueryItemsForm getItems={getItems} />
+        </div>
       </div>
     </div>
   );
