@@ -67,6 +67,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       <label>
         User ID:
         <input
+          data-field="user_id"
           type="text"
           name="user_id"
           value={formData.user_id}
@@ -77,6 +78,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       <label>
         Description:
         <textarea
+          data-field="description"
           name="description"
           value={formData.description}
           onChange={handleInputChange}
@@ -86,6 +88,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       <label>
         Keywords:
         <textarea
+          data-field="keywords"
           name="keywords"
           value={formData.keywords}
           onChange={handleInputChange}
@@ -95,6 +98,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       <label>
         Image:
         <input
+          data-field="image"
           type="text"
           name="image"
           value={formData.image}
@@ -105,6 +109,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       <label>
         Latitude:
         <input
+          data-field="lat"
           type="number"
           name="lat"
           value={formData.lat}
@@ -115,6 +120,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       <label>
         Longitude:
         <input
+          data-field="lon"
           type="number"
           name="lon"
           value={formData.lon}
@@ -123,6 +129,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
       </label>
       <br />
       <button
+        data-action="create_item"
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         type="submit"
       >

@@ -23,42 +23,42 @@ function QueryItemsForm({ getItems }: QueryItemsFormProps) {
     <form onSubmit={handleSubmit}>
       <label>
         User ID:
-        <input type="text" name="user_id" />
+        <input type="text" name="query_user_id" />
       </label>
       <br />
       <label>
         Description:
-        <textarea name="description" />
+        <textarea name="query_description" />
       </label>
       <br />
       <label>
         Keywords:
-        <textarea name="keywords" />
+        <textarea name="query_keywords" />
       </label>
       <br />
       <label>
         Image:
-        <input type="text" name="image" />
+        <input type="text" name="query_image" />
       </label>
       <br />
       <label>
         Latitude:
-        <input type="number" name="lat" />
+        <input type="number" name="query_lat" />
       </label>
       <br />
       <label>
         Longitude:
-        <input type="number" name="lon" />
+        <input type="number" name="query_lon" />
       </label>
       <br />
       <label>
         Date From:
-        <input type="datetime-local" name="date_from" />
+        <input type="datetime-local" name="query_date_from" />
       </label>
       <br />
       <label>
         Date To:
-        <input type="datetime-local" name="date_to" />
+        <input type="datetime-local" name="query_date_to" />
       </label>
       <br />
       <button

@@ -8,10 +8,10 @@ type ListItemProps = {
 function ListItem({ onDeleteItem, item }: ListItemProps) {
   return (
     <div className="border-soiid border-2 border-black max-w-max">
-      <li key={item.id}>
+      <li data-field="id" key={item.id}>
         User ID: {item.user_id}
         <br />
-        Description: {item.description}
+        <div data-field="description">Description: {item.description}</div>
         <br />
         <ul>
           Keywords:{" "}
@@ -29,6 +29,7 @@ function ListItem({ onDeleteItem, item }: ListItemProps) {
         <br />
       </li>
       <button
+        data-action="delete"
         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => onDeleteItem(item.id)}
       >

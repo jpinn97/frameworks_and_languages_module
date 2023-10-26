@@ -52,14 +52,16 @@ function App() {
           <PostItemForm onSubmit={getItems} />
         </div>
         <div className="overflow-y-hidden">
-          <ul className="list-inside list-disc p-4">
+          <ul className="list-inside list-none p-4">
             {items &&
               items.map((item) => (
-                <ListItem
-                  key={item.id}
-                  onDeleteItem={onDeleteItem}
-                  item={item}
-                />
+                <li>
+                  <ListItem
+                    key={item.id}
+                    onDeleteItem={onDeleteItem}
+                    item={item}
+                  />
+                </li>
               ))}
           </ul>
         </div>
