@@ -6,7 +6,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
   const [formData, setFormData] = useState<Item>({
     id: 0,
     user_id: "",
-    keywords: [],
+    keywords: "",
     description: "",
     image: "",
     lat: 0,
@@ -49,7 +49,7 @@ function PostItemForm({ onSubmit }: { onSubmit: () => void }) {
     if (name === "keywords") {
       // Normalize and split keywords based on various delimiters
       const normalizedInput: string[] = normalizeAndSplitKeywords(value);
-      setFormData({ ...formData, [name]: normalizedInput });
+      setFormData({ ...formData, keywords: normalizedInput.join(",") });
     } else {
       // Handle other input fields as usual
       setFormData({ ...formData, [name]: value });

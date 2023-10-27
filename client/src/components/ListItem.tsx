@@ -8,7 +8,7 @@ type ListItemProps = {
 function ListItem({ onDeleteItem, item }: ListItemProps) {
   return (
     <div className="border-soiid border-2 border-black max-w-max">
-      <li data-field="id" key={item.id}>
+      <div data-field="id" key={item.id}>
         User ID: {item.user_id}
         <br />
         <div data-field="description">Description: {item.description}</div>
@@ -27,7 +27,7 @@ function ListItem({ onDeleteItem, item }: ListItemProps) {
         <br />
         Date From: {item.date_from}
         <br />
-      </li>
+      </div>
       <button
         data-action="delete"
         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

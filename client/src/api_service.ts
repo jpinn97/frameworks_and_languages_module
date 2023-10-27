@@ -3,7 +3,7 @@ const url = "http://localhost:8000";
 export interface Item {
   id: number;
   user_id: string;
-  keywords: string[];
+  keywords: string;
   description: string;
   image: string;
   lat: number;

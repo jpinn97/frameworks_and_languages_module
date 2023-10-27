@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"embed"
+	"encoding/json"
 	"fmt"
+	"io"
 	"math"
 	"net/http"
 	"strconv"
@@ -13,17 +16,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 )
-
-// Struct for Item schema that is POST to server.
-type ItemPOST struct {
-	User_ID     string   `json:"user_id" binding:"required"`
-	Keywords    []string `json:"keywords" binding:"required"`
-	Description string   `json:"description" binding:"required"`
-	Image       *string  `json:"image,omitempty"`
-	Lat         float64  `json:"lat" binding:"required"`
-	Lon         float64  `json:"lon" binding:"required"`
-}
 
 // Struct for Item schema that is GET from server.
 type Item struct {
@@ -38,22 +32,119 @@ type Item struct {
 	Date_to     *time.Time          `json:"date_to,omitempty"`
 }
 
-// Converts an item recieved from POST to the struct that can be stored and returned later via GET.
-func ConvertItemPOSTToItems(itemPOST ItemPOST, id int64, dateFrom time.Time, dateTo *time.Time) Item {
-	keywordsMap := make(map[string]struct{})
-	for _, keyword := range itemPOST.Keywords {
-		keywordsMap[keyword] = struct{}{}
-	}
-	return Item{
-		ID:          id,
-		User_ID:     itemPOST.User_ID,
-		Keywords:    keywordsMap,
-		Description: itemPOST.Description,
-		Image:       itemPOST.Image,
-		Lat:         itemPOST.Lat,
-		Lon:         itemPOST.Lon,
-		Date_from:   dateFrom,
-		Date_to:     dateTo,
+type itemMiddleware struct {
+	User_ID     string              `json:"user_id" binding:"required"`
+	Keywords    map[string]struct{} `json:"keywords" binding:"required"`
+	Description string              `json:"description" binding:"required"`
+	Image       *string             `json:"image,omitempty"`
+	Lat         float64             `json:"lat" binding:"required"`
+	Lon         float64             `json:"lon" binding:"required"`
+}
+
+func JSONMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Read the request body and store it in a byte slice.
+		body, err := c.GetRawData()
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			c.Abort()
+			return
+		}
+
+		// Unmarshal the JSON into itemMiddleware
+		var customItem interface{}
+		if err := json.Unmarshal(body, &customItem); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			c.Abort()
+			return
+		}
+
+		if m, ok := customItem.(map[string]interface{}); ok {
+			keywordsValue, exists := m["keywords"]
+			if !exists {
+				// 'Keywords' field is not present, handle accordingly or skip it
+			} else {
+				switch keywords := keywordsValue.(type) {
+				case string:
+					// Handle the case where 'Keywords' is a string
+					// Split the string by comma and store in a map
+					keywordsList := strings.Split(keywords, ",")
+					keywordMap := make(map[string]struct{})
+					for _, keyword := range keywordsList {
+						keywordMap[keyword] = struct{}{}
+					}
+					m["keywords"] = keywordMap
+				case []interface{}:
+					// Handle the case where 'Keywords' is a slice of interfaces
+					// Iterate through the elements and process them as needed.
+					keywordMap := make(map[string]struct{})
+					for _, val := range keywords {
+						if keyword, ok := val.(string); ok {
+							// Add the string value to the map
+							keywordMap[keyword] = struct{}{}
+						}
+					}
+					m["keywords"] = keywordMap
+				default:
+					c.JSON(400, gin.H{"error": "Invalid 'Keywords' field type"})
+					c.Abort()
+					return
+				}
+				latValue, exists := m["lat"]
+				if !exists {
+					// 'lat' field is not present, handle accordingly or skip it
+				} else {
+					switch lat := latValue.(type) {
+					case string:
+						latFloat, _ := strconv.ParseFloat(lat, 64)
+						m["lat"] = latFloat
+					case float64:
+						//
+					default:
+						c.JSON(400, gin.H{"error": "Invalid 'Lat' field type"})
+						c.Abort()
+						return
+					}
+				}
+				lonValue, exists := m["lon"]
+				if !exists {
+					// 'lon' field is not present, handle accordingly or skip it
+				} else {
+					switch lon := lonValue.(type) {
+					case string:
+						lonFloat, _ := strconv.ParseFloat(lon, 64)
+						m["lon"] = lonFloat
+					case float64:
+						//
+					default:
+						c.JSON(400, gin.H{"error": "Invalid 'Lon' field type"})
+						c.Abort()
+						return
+					}
+				}
+			}
+		}
+		// Marshal the customItem as an itemMiddleware
+		var item itemMiddleware
+		err = mapstructure.Decode(customItem, &item)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			c.Abort()
+			return
+		}
+		// Marshal the updated itemMiddleware back into a byte slice.
+		updatedBody, err := json.Marshal(item)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			c.Abort()
+			return
+		}
+
+		// Set the request body to the updated JSON data.
+		c.Request.Body = io.NopCloser(bytes.NewReader(updatedBody))
+
+		// Call the next handler.
+		c.Next()
 	}
 }
 
@@ -99,7 +190,7 @@ func main() {
 	r.GET("/", RootHandler)
 
 	// Define route handler for POST a single item.
-	r.POST("/item", PostItemHandler)
+	r.POST("/item", JSONMiddleware(), PostItemHandler)
 
 	// Define route handler for GET a single item.
 	r.GET("/item/:itemId", GetItemHandler)
@@ -132,7 +223,7 @@ func RootHandler(c *gin.Context) {
 
 func PostItemHandler(c *gin.Context) {
 	// Will attempt to bind to ItemPOST struct.
-	var ReceivedData ItemPOST
+	var ReceivedData itemMiddleware
 
 	// Call ShouldBindJSON to attempt to bind the received JSON to Item struct.
 	if err := c.ShouldBindJSON(&ReceivedData); err != nil {
@@ -157,7 +248,17 @@ func PostItemHandler(c *gin.Context) {
 	newId := atomic.LoadInt64(&idCounter) // Safely read counter.
 	atomic.AddInt64(&idCounter, 1)        // Safetly increment counter.
 
-	StoredData := ConvertItemPOSTToItems(ReceivedData, newId, parsedTime, nil)
+	StoredData := Item{
+		ID:          newId,
+		User_ID:     ReceivedData.User_ID,
+		Keywords:    ReceivedData.Keywords,
+		Description: ReceivedData.Description,
+		Image:       ReceivedData.Image,
+		Lat:         ReceivedData.Lat,
+		Lon:         ReceivedData.Lon,
+		Date_from:   parsedTime,
+		Date_to:     nil,
+	}
 
 	itemsMu.Lock() // Lock item mutex for write, thus locking the Items map.
 	defer itemsMu.Unlock()
