@@ -94,10 +94,18 @@
             .then(response => response.json())
             .then(json => {
                 console.log("Get works!!", json);
-                this.items = json;
+                this.items = [...json];
             })
             .catch(err => console.error(err));
             },
+            deleteItem(id) {
+            fetch(`/item/${id}`, {
+                method: 'DELETE',
+            })
+            .then(json => console.log('Delete works, yaaaa!', json))
+            .then(() => this.getItems())
+            .catch(err => console.error(err));
+           },
         created() {
             this.clearForm()
             this.getItems();

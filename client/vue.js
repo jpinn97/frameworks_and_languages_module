@@ -36,6 +36,21 @@ app.get('/items', (req, res) => {
 });
 
 
+app.delete('/item/:id', (req, res) => {
+  const itemId = req.params.id; 
+  console.log('Received delete request for ID:', itemId);
+  console.log('Attempting to delete item with ID:', itemId);
+  console.log('Current items:', items);
+
+  const itemIndex = items.findIndex(item => item.id.toString() === itemId);
+
+  if (itemIndex === -1) {
+    return res.status(404).json({ status: 'error', message: 'Item not found!' });
+  }
+
+  items.splice(itemIndex, 1);
+  res.json({ status: 'success', message: `Item with ID ${itemId} deleted!` });
+});
 
 
 
