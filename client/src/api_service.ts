@@ -1,4 +1,4 @@
-const url = "http://localhost:8000";
+const url = `http://${window.location.hostname}:8000`;
 
 export interface Item {
   id: number;
