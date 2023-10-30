@@ -11,7 +11,7 @@ help:	## display this help
 	# deafult server port 8000
 	# default client port 8001
 
-.PHONY: run run_example_server_client run example_server test_server test_client test_example_server test_example_client cypress cypress_cmd
+.PHONY: run custom_client run run_example_server_client run example_server test_server test_client test_example_server test_example_client cypress cypress_cmd
 
 run:  ##
 	${DOCKER_COMPOSE} up --build
