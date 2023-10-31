@@ -10,14 +10,15 @@
     {{ message }}
 
     <h2>FreeCycle</h2>    
-    <form @submit.prevent="addItem">
+    <form @submit.prevent="create_item">
         <input v-model="item.user_id" name="user_id" placeholder="user_id">
         <input v-model="item.lon" name="lon" placeholder="longitude">
         <input v-model="item.lat" name="lat" placeholder="latitude">
-        <input v-model="keywordsInput" placeholder="Enter keywords separated by commas">
+        <input v-model="keywordsInput" name="keywords" placeholder="Enter keywords separated by commas">
         <input v-model="item.image" name="image" placeholder="image url">
         <textarea v-model="item.description" name="description" placeholder="description"></textarea>  
-        <button data-action="addItem">Create Item</button>   
+        <button data-action="create_item">Create Item</button>
+  
     </form>
     {{item.user_id}} - {{item.lon}} - {{item.lat}} - {{item.keywords}} - {{item.image}} - {{item.description}}
 
@@ -25,7 +26,7 @@
 
     <ul>
         <li v-for="item of items">
-            <span data-field="user_id">{{item.id}}</span>
+            <span data-field="id">{{item.id}}</span>
             <span data-field="user_id">{{item.user_id}}</span>
             <span data-field="lon">{{item.lon}}</span>
             <span data-field="lat">{{item.lat}}</span>
@@ -40,7 +41,9 @@
 
 <script type="module">
     import { createApp } from 'vue';
+
 const urlAPI = 'https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev'
+
     createApp({
         data() {
             return {
@@ -68,8 +71,8 @@ const urlAPI = 'https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev'
                 this.item.keywords = '',
                 this.item.image = 'http://placekitten.com/100/100',
                 this.item.description = ''
-            }, 
-            addItem() {
+            },
+            create_item() {
                 // console.log("this.item")
                 this.item.keywords = this.keywordsInput.split(',').map(keyword => keyword.trim());
                 fetch(`${urlAPI}/item`, {
@@ -93,22 +96,33 @@ const urlAPI = 'https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev'
             })
             .then(response => response.json())
             .then(json => {
-                console.log("Get works!!", json);
+                console.log("Get works!! or received items after delete", json);
                 this.items = [...json];
             })
             .catch(err => console.error(err));
             },
-            deleteItem(id) {
-            fetch(`${urlAPI}/item/${id}`, {
-                method: 'DELETE',
-            })
-            .then(json => console.log('Delete works, yaaaa!', json))
-            .then(() => this.getItems())
-            .catch(err => console.error(err));
-           },
         created() {
             this.clearForm()
             this.getItems();
+           },
+           deleteItem(id) {
+            fetch(`${urlAPI}/item/${id}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.status !== 204) {
+                     return response.json();  // only parse JSON if response isn't 204
+                    }
+            })
+             .then(json => {
+                if (json) {
+                    console.log('Delete response:', json);
+                 } else {
+                    console.log('Delete successful!');
+                }
+            })
+            .then(() => this.getItems())
+            .catch(err => console.error(err));
            }
         }
     }).mount('#app');
