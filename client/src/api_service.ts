@@ -17,9 +17,7 @@ async function handleGetApiRequest<T>(
   endpoint: string,
   method = "GET"
 ): Promise<T> {
-  const fullUrl = `${url}${endpoint}`;
-
-  const response = await fetch(fullUrl, {
+  const response = await fetch(`${url}${endpoint}`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +32,7 @@ async function handleGetApiRequest<T>(
 }
 
 async function getItem<T>(id: string): Promise<T> {
-  return handleGetApiRequest(`/item/${id}`);
+  return handleGetApiRequest<T>(`/item/${id}`);
 }
 
 async function getItems(): Promise<Item[]> {
