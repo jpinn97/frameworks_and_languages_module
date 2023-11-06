@@ -158,7 +158,7 @@ func init() { // initialize map
 	items = make(map[int64]Item)
 }
 
-var idCounter int64 = 0 // initialise counter
+var idCounter int64 = 1 // initialise counter
 
 //go:embed README.md
 var readme embed.FS

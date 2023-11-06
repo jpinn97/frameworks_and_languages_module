@@ -1,4 +1,5 @@
-const url = `http://${window.location.hostname}:8000`;
+const urlParams = new URLSearchParams(window.location.search);
+const url = (urlParams.get("api") || "").replace(/\/$/, "");
 
 export interface Item {
   id: number;
