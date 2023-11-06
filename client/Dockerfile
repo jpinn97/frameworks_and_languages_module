@@ -30,11 +30,3 @@ CMD ["http-server", "--cors", "-p", "8001"]
 
 # # Command to run the client
 # CMD ["python3", "-m", "http.server", "8001"]
-
-
-
-
-
-
-
-
