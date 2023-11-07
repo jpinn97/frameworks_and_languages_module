@@ -2,14 +2,12 @@
 
 
 //from Alan's/lecturers' explanation and assignments  hint 03b
+
+const DEFAULT_API = '/api/v1'; 
 const urlParams = new URLSearchParams(window.location.search);
-console.log(urlParams)
-let urlAPI = urlParams.get('api') || null;
-console.log(urlAPI)
+let urlAPI = urlParams.get('api') || DEFAULT_API
 if (!urlAPI) {
-  //  show the instruction message If the api parameter is not set
   document.getElementById('instruction').style.display = 'block';
-  // You could also disable functionality or navigation in your app until the API URL is set
 } else {
   // Clean up the URL in case there's a trailing slash
   urlAPI = urlAPI.replace(/\/$/, '');
@@ -25,7 +23,7 @@ Vue.createApp({
                 lat: null,
                 lon: null,
                 keywords: [],
-                image: 'http://source.unsplash.com/random',
+                image: 'https://source.unsplash.com/random',
                 description: ''
             },
             keywordsInput:'',
@@ -40,7 +38,7 @@ Vue.createApp({
             this.item.lat = null;
             this.item.lon = null
             this.item.keywords = [];
-            this.item.image = 'http://source.unsplash.com/random';
+            this.item.image = 'https://source.unsplash.com/random';
             this.item.description = '';
         },
         create_item() {
