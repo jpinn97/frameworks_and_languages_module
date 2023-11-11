@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function NewItemForm() {
-  // Stage 1: State Initialization
+  // Initial  State Initialization
   const [formData, setFormData] = useState({
     user_id: '',
     lat: '',
