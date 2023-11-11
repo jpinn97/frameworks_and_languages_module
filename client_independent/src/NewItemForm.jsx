@@ -10,6 +10,56 @@ function NewItemForm() {
     keywords: '',
     description: '',
   });
+
+ 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const onItemSubmit = (e) => {
+     
+    e.preventDefault();
+    fetch(`https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev/items/item`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          console.log('Item created successfully.');
+          setIsChange(!isChange);
+          // TODO: add code here to handle a successful response, e.g., show a success message.
+        } else {
+          console.error('Failed to create item.');
+          // TODO: add code here to handle a failed response, e.g., show an error message.
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // TODO: add code here to handle errors, e.g., show a network error message.
+      });
+  };
+  const [items, setItems] = useState([]);
+      
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  useEffect(() => {
+    fetchItems();
+  }, [isChange]);
+
+  const fetchItems = () => {
+    fetch(`https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev/items`)
+      .then((response) => response.json())
+      .then((data) => {
+        setItems(data);
+      })
+      .catch((error) => console.error("Error fetching items:", error));
+  };
        // Placeholder for UI
   return (
     <div>
