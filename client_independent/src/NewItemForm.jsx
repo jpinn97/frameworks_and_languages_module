@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 const urlAPI = import.meta.env.VITE_API_URL;
 //const testValue = import.meta.env.VITE_TEST;
 
@@ -6,6 +6,8 @@ const urlAPI = import.meta.env.VITE_API_URL;
 
 
 function NewItemForm() {
+
+  const [isChange, setIsChange] = useState(false);
   // Initial  State Initialization
   const [formData, setFormData] = useState({
     user_id: '',
@@ -25,7 +27,7 @@ function NewItemForm() {
   const onItemSubmit = (e) => {
      
     e.preventDefault();
-    fetch(`{urlAPI}/item`, {
+    fetch(`${urlAPI}/item`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +60,7 @@ function NewItemForm() {
   }, [isChange]);
 
   const fetchItems = () => {
-    fetch(`{urlAPI}/items`)
+    fetch(`${urlAPI}/items`)
       .then((response) => response.json())
       .then((data) => {
         setItems(data);
@@ -138,6 +140,30 @@ function NewItemForm() {
       </div>
       <button type="submit">Create Item</button>
     </form>
+
+    <div className="container mx-auto mt-5">
+        <h3 className="text-lg font-semibold mb-4">Items</h3>
+        <div className="space-y-4">
+          {items.map((item) => (
+            <div key={item.id} className="flex items-center bg-gray-100 p-4 rounded-md">
+              <button
+                className="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
+                onClick={() => handleDeleteItem(item.id)}
+              >
+                Delete
+              </button>
+              <div className="ml-4">
+                <h5 className="text-md font-bold">Item ID: {item.id}</h5>
+                <p>User ID: {item.user_id}</p>
+                <p>Lat: {item.lat}</p>
+                <p>Lon: {item.lon}</p>
+                <img src={item.image} alt="item" />
+                <p>Description: {item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     
     </div>
   );
