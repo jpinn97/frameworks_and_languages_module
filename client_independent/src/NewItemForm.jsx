@@ -1,4 +1,9 @@
 import { useState } from 'react';
+const urlAPI = import.meta.env.VITE_API_URL;
+//const testValue = import.meta.env.VITE_TEST;
+
+
+
 
 function NewItemForm() {
   // Initial  State Initialization
@@ -20,7 +25,7 @@ function NewItemForm() {
   const onItemSubmit = (e) => {
      
     e.preventDefault();
-    fetch(`https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev/items/item`, {
+    fetch(`{urlAPI}/item`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +58,7 @@ function NewItemForm() {
   }, [isChange]);
 
   const fetchItems = () => {
-    fetch(`https://stunning-waffle-qx7p7x96qggc65x6-8000.app.github.dev/items`)
+    fetch(`{urlAPI}/items`)
       .then((response) => response.json())
       .then((data) => {
         setItems(data);
