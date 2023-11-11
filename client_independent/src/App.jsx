@@ -1,18 +1,23 @@
+import NewItemForm from "./NewItemForm";
+//import ItemList from "./ItemList";
 
-
-
-import './App.css'
 
 function App() {
-  //const [count, setCount] = useState(0)
-
   return (
-      <div className="p-9 bg-blue-500 text-white font-bold rounded-lg">
-   <h1>Hello Rashid, Tailwind CSS!</h1>
+    <div className="container mx-auto px-4">
+      <h1 className="text-center bg-blue-500 text-white font-bold p-5 rounded-full">FreeCycle</h1>
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div>
+          <div>
+            <NewItemForm />
+          </div>
+          {/* <div>
+            <ItemList />
+          </div> */}
+        </div>
       </div>
-      
-
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
