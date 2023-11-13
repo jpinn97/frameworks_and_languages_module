@@ -2,21 +2,8 @@
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+    "version": "1.21",
     "configurations": [
-        {
-            "name": "Pytest",
-            "type": "python",
-            "request": "launch",
-            "module": "pytest",
-            "args": [
-                "${workspaceFolder}",
-                "-k",
-                "test_item_post_201"
-            ],
-            "console": "integratedTerminal",
-            "justMyCode": false
-        },
         {
             "name": "Launch Package",
             "type": "go",
@@ -25,11 +12,17 @@
             "program": "${fileDirname}"
         },
         {
-            "type": "chrome",
+            "name": "Pytest",
+            "type": "python",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}/app"
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}",
+                "-k",
+                "test_item_get_200_fields"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }

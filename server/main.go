@@ -151,11 +151,13 @@ func JSONMiddleware() gin.HandlerFunc {
 // items map as package-level variable with mutex to ensure concurrency.
 var (
 	items   map[int64]Item
+	keys    []int64
 	itemsMu sync.RWMutex
 )
 
 func init() { // initialize map
 	items = make(map[int64]Item)
+	keys = make([]int64, 0)
 }
 
 var idCounter int64 = 1 // initialise counter
@@ -263,6 +265,7 @@ func PostItemHandler(c *gin.Context) {
 	itemsMu.Lock() // Lock item mutex for write, thus locking the Items map.
 	defer itemsMu.Unlock()
 	items[newId] = StoredData
+	keys = append(keys, newId)
 
 	c.JSON(http.StatusCreated, StoredData)
 }
@@ -346,12 +349,12 @@ func GetItemsHandler(c *gin.Context) {
 	defer itemsMu.RUnlock()
 
 	// Convert map values to a list (slice) of items.
-	var itemList []Item
-	for _, item := range items { // Go has no builtin map.values() function, so we iterate over the map as is the idiomatic Go way.
-		itemList = append(itemList, item)
+	var itemsOrdered []Item
+	for _, key := range keys {
+		itemsOrdered = append(itemsOrdered, items[key])
 	}
 	if c.Request.URL.RawQuery == "" {
-		c.JSON(http.StatusOK, itemList)
+		c.JSON(http.StatusOK, itemsOrdered)
 		return
 	} else {
 		// Retrieve and process query parameters if they exist.
