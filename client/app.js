@@ -23,7 +23,7 @@ Vue.createApp({
                 lat: null,
                 lon: null,
                 keywords: [],
-                image: 'https://source.unsplash.com/random',
+                image: '',
                 description: ''
             },
             keywordsInput:'',
