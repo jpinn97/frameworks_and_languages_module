@@ -3,7 +3,7 @@
 
 // //from Alan's/lecturers' explanation and assignments  hint 03b
 
-// const DEFAULT_API = '/api/v1'; 
+//  const DEFAULT_API = '/api/v1'; 
 // const urlParams = new URLSearchParams(window.location.search);
 // let urlAPI = urlParams.get('api') || DEFAULT_API
 // if (!urlAPI) {
@@ -13,13 +13,9 @@
 //   urlAPI = urlAPI.replace(/\/$/, '');
 //   // Initializing  Vue app or other functionality that depends on the API URL
 
-// const DEFAULT_API = '/api/v1';
-// const urlParams = new URLSearchParams(window.location.search);
-// let urlAPI = urlParams.get('api') || DEFAULT_API;
-// //urlAPI = urlAPI.replace(/\/$/, '');
-
+const DEFAULT_API = '/api/v1'; 
 const urlParams = new URLSearchParams(window.location.search);
-const urlAPI = (urlParams.get('api') || '/api/v1').replace(/\/$/, '');
+let urlAPI = (urlParams.get('api') || DEFAULT_API).replace(/\/$/, '');
 
 
 Vue.createApp({
