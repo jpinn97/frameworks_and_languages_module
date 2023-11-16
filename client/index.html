@@ -45,14 +45,14 @@
         <div class="flex justify-center bg-purple-300 w-screen mt-0" style="font-family: 'Muli', sans-serif;">
           <div class="container flex flex-wrap justify-center items-start pt-4">
             <div class="w-full text-center mb-4">
-              <h1 class="text-xl text-gray-700 font-bold leading-none">
+              <h1 class="text-xl text-black-700 font-bold leading-none">
                 Items Created
               </h1>
-            </div>       
+              <p id="instruction" v-show="showInstruction" class="text-red-500 bg-green-600 font-bold">Please add the server domain as a query parameter to the URL, e.g., ?api=http://your-server-domain</p>
+            </div>                 
             <!--  v-for directive  loops through each item -->
-            <!-- <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center"> -->
-             <ul class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mx-auto" >
-              <li v-for="item in items" :key="item.id">
+            <ul aria-live="polite"  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">  
+              <li  v-for="item in items" :key="item.id">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
                   <img :src="item.image" alt="" class="w-full h-48 object-cover">
                   <div class="p-4 bg-purple-700 flex-1 flex flex-col">
@@ -62,9 +62,10 @@
                       <p data-field="lon">Longitude: {{ item.lon }}</p>
                       <p data-field="lat">Latitude: {{ item.lat }}</p>
                       <p data-field="keywords">Keywords: {{ item.keywords.join(', ') }}</p>
-                      <p data-field="description">{{ item.description }}</p>
+                      <p data-field="description">Description: {{ item.description }}</p>
                     </div>
                     <button 
+                      :aria-label="`Delete item ${item.id}`"
                       class="bg-red-500 text-white mt-auto px-4 py-2 rounded shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out" 
                       data-action="delete" 
                       @click="deleteItem(item.id)">
@@ -74,14 +75,13 @@
                 </div>
               </li>
             </ul>
-            <!-- </div>          -->
           </div>
         </div>
           
     </div>
-    <div id="instruction" style="display:none;">
+    <!-- <div id="instruction" style="display:none">
       <p class="text-red-500 bg-green-600 font-bold">Please add the server domain as a query parameter to the URL, e.g., ?api=http://your-server-domain</p>
-    </div>
+    </div> -->
     <script src="https://unpkg.com/vue@next"></script>
     <script type="module" src="app.js"></script>
   </body>

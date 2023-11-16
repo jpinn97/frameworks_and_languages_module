@@ -1,17 +1,25 @@
 
 
 
-//from Alan's/lecturers' explanation and assignments  hint 03b
+// //from Alan's/lecturers' explanation and assignments  hint 03b
 
-const DEFAULT_API = '/api/v1'; 
+// const DEFAULT_API = '/api/v1'; 
+// const urlParams = new URLSearchParams(window.location.search);
+// let urlAPI = urlParams.get('api') || DEFAULT_API
+// if (!urlAPI) {
+//   document.getElementById('instruction').style.display = 'block';
+// } else {
+//   // Clean up the URL in case there's a trailing slash
+//   urlAPI = urlAPI.replace(/\/$/, '');
+//   // Initializing  Vue app or other functionality that depends on the API URL
+
+// const DEFAULT_API = '/api/v1';
+// const urlParams = new URLSearchParams(window.location.search);
+// let urlAPI = urlParams.get('api') || DEFAULT_API;
+// //urlAPI = urlAPI.replace(/\/$/, '');
+
 const urlParams = new URLSearchParams(window.location.search);
-let urlAPI = urlParams.get('api') || DEFAULT_API
-if (!urlAPI) {
-  document.getElementById('instruction').style.display = 'block';
-} else {
-  // Clean up the URL in case there's a trailing slash
-  urlAPI = urlAPI.replace(/\/$/, '');
-  // Initializing  Vue app or other functionality that depends on the API URL
+const urlAPI = (urlParams.get('api') || '/api/v1').replace(/\/$/, '');
 
 
 Vue.createApp({
@@ -27,7 +35,8 @@ Vue.createApp({
                 description: ''
             },
             keywordsInput:'',
-            items: []
+            items: [],
+            showInstruction: !urlParams.has('api') || urlAPI === DEFAULT_API,
         }
     },      
     methods:{
@@ -38,8 +47,13 @@ Vue.createApp({
             this.item.lat = null;
             this.item.lon = null
             this.item.keywords = [];
-            this.item.image = 'https://source.unsplash.com/random';
             this.item.description = '';
+            // Append a unique query parameter to bypass cache
+            const randomKey1 = Math.floor(Math.random() * 1000)
+            //const randomKey2 = Math.floor(Math.random() * 1000)
+            //this.item.image = `https://picsum.photos/${randomKey1}/${randomKey2}`;
+            this.item.image = `https://picsum.photos/${randomKey1}`;
+            
         },
         create_item() {
             // console.log("this.item")
@@ -95,4 +109,4 @@ Vue.createApp({
        }
 }).mount('#app');
 
-}
+// }
