@@ -19,7 +19,7 @@
             "args": [
                 "${workspaceFolder}",
                 "-k",
-                "test_item_get_200_fields"
+                "test_items_filter_date_from"
             ],
             "console": "integratedTerminal",
             "justMyCode": false

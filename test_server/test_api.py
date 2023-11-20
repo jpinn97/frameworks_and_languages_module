@@ -275,6 +275,7 @@ def test_items_filter_date_from(get_items, item_factory):
     for i in range(2):
         item_factory()
     date_from = datetime.datetime.now()
+    print(f"date_from: {date_from.isoformat()}")
     for i in range(2):
         item_factory()
     items = get_items(date_from=date_from.isoformat())

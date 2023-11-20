@@ -415,13 +415,12 @@ func GetItemsHandler(c *gin.Context) {
 				itemResults = append(itemResults, items[id])
 				continue
 			}
-
 			// date_to not required?     "2023-10-19T00:21:33.467886"
-			date_from, err := time.Parse("2006-01-02T15:04:05.999999-0000", date_from+"-0000")
-
+			fmt.Println("no format date_from:", date_from)
+			date_from, err := time.Parse("2006-01-02T15:04:05.999999", date_from)
+			fmt.Println("format date_from:", date_from)
 			if err == nil {
 				fmt.Println("item.Date_from:", item.Date_from)
-				fmt.Println("date_from:", date_from)
 				if item.Date_from.Before(date_from) {
 					itemResults = append(itemResults, items[id])
 					continue
