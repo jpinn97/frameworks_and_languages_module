@@ -123,3 +123,8 @@ Conclusions
 
 (justify why frameworks are recommended - 120ish words)
 (justify which frameworks should be used and why 180ish words)
+
+
+In JavaScript, the .cloneNode(true) method is used to create a deep copy of a node and its entire subtree, including all of its attributes and all of its descendants. Setting this to false only copies the node.
+
+This renderItemListFieldLookup object contains a set of functions, each designed to update a specific type of HTML element with given data.
