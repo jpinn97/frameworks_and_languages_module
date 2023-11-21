@@ -1,32 +1,20 @@
-FROM node:16
+# Use an official Node runtime as a parent image
+FROM node:18
 
-# Set the working directory in the container to /app
+# Set the working directory in the container
 WORKDIR /app
 
-# Global install of http-server
-RUN npm install -g http-server
+# Copy package.json and package-lock.json (or yarn.lock)
+COPY package*.json ./
 
-# Copy the client code into the container
+# Install any dependencies
+RUN npm install
+
+# Bundle app source inside the Docker image
 COPY . .
 
-# Expose the port the client will run on
+# Make port --- available to the world outside this container
 EXPOSE 8001
 
-# Command to run the client
-CMD ["http-server", "--cors", "-p", "8001"]
-
-
-
-# # Use a Python base image
-# FROM python:3.9
-
-# WORKDIR /app
-
-# # Copy the client code into the container
-# COPY . .
-
-# # Expose the port the client will run on
-# EXPOSE 8001
-
-# # Command to run the client
-# CMD ["python3", "-m", "http.server", "8001"]
+# Command to run the app
+CMD ["npm", "run", "dev"]
