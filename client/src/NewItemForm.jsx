@@ -5,16 +5,17 @@ const urlAPI = import.meta.env.VITE_API_URL;
 // const urlParams = new URLSearchParams(window.location.search);
 // const urlAPI = (urlParams.get('api') || '/api/v1').replace(/\/$/, '');
 
+// let img = "https://picsum.photos/150"
 
 function NewItemForm() {
-
+  let img = "https://picsum.photos/150"
  
   // Initial  State Initialization
   const [formData, setFormData] = useState({
     user_id: '',
     lat: '',
     lon: '',
-    image: "https://picsum.photos/150",
+    image: img,
     keywords: '',
     description: '',
   });
@@ -34,7 +35,6 @@ function NewItemForm() {
   const onItemSubmit = (e) => {  
     e.preventDefault();
     console.log("Server Url: " + import.meta.env.VITE_API_URL),
-    console.log("Posting item!!!"),
     fetch(`${urlAPI}/item`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -81,13 +81,13 @@ function NewItemForm() {
   };
        // Placeholder for UI
   return (
-    <div  className="container mx-auto p-4">
+    <div  className="container flex flex-col mx-auto p-4">
 
-  <form onSubmit={onItemSubmit} className="max-w-md mx-auto bg-purple-50 shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4">
+  <form onSubmit={onItemSubmit} className="max-w-md mx-auto bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4">
     <div className="flex items-center mb-5">
-      <label htmlFor="user_id" class="mr-2">UserID:</label>
+      <label htmlFor="user_id" className="mr-2">UserID:</label>
       <input
-        className="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
+        className="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-100 outline-none focus:border-green-400"
         id="user_id"
         type="text"
         name="user_id"
@@ -98,9 +98,9 @@ function NewItemForm() {
       />
     </div>
     <div className="flex items-center mb-5" >
-        <label htmlFor="lon">Longitude:  </label>
+        <label htmlFor="lon" className="mr-2">Longitude:  </label>
         <input
-          class="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
+          class="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-200 outline-none focus:border-green-400"
           id="lon"
           type="number"
           name="lon"
@@ -110,9 +110,9 @@ function NewItemForm() {
         />
       </div>
     <div className="flex items-center mb-5">
-        <label htmlFor="lat">latitude:  </label>
+        <label htmlFor="lat" className="mr-2">latitude:  </label>
         <input
-           className="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
+           className="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-200 outline-none focus:border-green-400"
           id="lat"
           type="number"
           name="lat"
@@ -122,9 +122,9 @@ function NewItemForm() {
         />
       </div>
     <div className="flex items-center mb-5">
-        <label htmlFor="image">Image:  </label>
+        <label htmlFor="image" className="mr-2">Image:  </label>
         <input
-          className="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
+          className="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-200 outline-none focus:border-green-400"
           id="image"
           type="url"
           name="image"
@@ -134,9 +134,9 @@ function NewItemForm() {
         />
       </div>
      <div className="flex items-center mb-5">
-        <label htmlFor="keywords">Keywords: </label>
+        <label htmlFor="keywords" className="mr-2">Keywords: </label>
         <input
-           className="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
+           className="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
           id="keywords"
           type="text"
           name="keywords"
@@ -146,9 +146,9 @@ function NewItemForm() {
         />
       </div>
     <div className="flex items-center mb-5">
-      <label htmlFor="description" class="mr-2">Description:</label>
+      <label htmlFor="description" className="mr-2">Description:</label>
       <textarea
-        className="border-b-2 border-gray-400 flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
+        className="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-300 outline-none focus:border-green-400"
         id="description"
         name="description"
         rows="3"
@@ -159,36 +159,37 @@ function NewItemForm() {
       ></textarea>
     </div>
     <div className="flex justify-center">
-      <button type="submit" class="bg-purple-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-5 rounded focus:outline-none focus:shadow-outline">
+      <button type="submit" className="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-5 rounded focus:outline-none focus:shadow-outline">
         Create Item
       </button>
     </div>
   </form>
 
     <div aria-live="polite" className="container mx-auto mt-5 " >
-        <div class="w-full pl-5 lg:pl-2 mb-4 mt-4 justify-center">
-      <h1 class="text-3xl lg:text-4xl text-gray-700 font-extrabold flex justify-center">
+        <div className="w-full pl-5 lg:pl-2 mb-4 mt-4 justify-center">
+      <h1 className="text-3xl lg:text-4xl text-gray-600 font-extrabold flex justify-center">
         Created Items
       </h1>
     </div>
         
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
-            <div key={item.id} className="flex items-center bg-gray-100 p-4 rounded-md">
-              <div>
-              <img src={item.image} alt="item" />
+            <div key={item.id} className="bg-gray-100 p-4 rounded-md justify-center"><div>
+              <img src={item.image} alt="item"/>
                 <h5>Item ID: {item.id}</h5>
                 <p>User ID: {item.user_id}</p>
                 <p>Lat: {item.lat}</p>
                 <p>Lon: {item.lon}</p>
                 <p>Description: {item.description}</p>
               </div>
+              <div>
               <button
-              className="bg-purple-700 text-white mx-auto px-4 py-2 hover:bg-red-600 rounded shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out" 
+              className="bg-gray-600 items-center text-white mx-auto px-4 py-2 hover:bg-red-600 rounded shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out" 
                 onClick={() => handleDeleteItem(item.id)}
               >
                 Delete
               </button>
+              </div>
             </div>
           ))}
         </div>

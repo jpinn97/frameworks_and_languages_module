@@ -1,5 +1,5 @@
 # Define the Docker image name
-IMAGE_NAME=client_independent_react_app
+IMAGE_NAME=client
 
 # Build the Docker image
 build:
