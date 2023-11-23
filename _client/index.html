@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FreeCycle App</title>
+  </head>
+  <body>
+
+    <div id="app">   
+        <div class="bg-purple-700 text-white font-bold mb-12 p-4" > FreeCycle</div>
+        <form @submit.prevent="create_item" class="max-w-lg mx-auto p-4 space-y-4 bg-white shadow-lg rounded-lg mb-4" >
+          <div class="flex flex-col space-y-2">
+            <label for="user_id" class="font-semibold">User ID:</label>
+            <input id="user_id" v-model="item.user_id" name="user_id" placeholder="user_id" class="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col space-y-2">
+              <label for="longitude" class="font-semibold">Longitude:</label>
+              <input id="longitude" v-model="item.lon" name="lon" placeholder="longitude" class="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm">
+            </div>
+            <div class="flex flex-col space-y-2">
+              <label for="latitude" class="font-semibold">Latitude:</label>
+              <input id="latitude" v-model="item.lat" name="lat" placeholder="latitude" class="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm">
+            </div>
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="keywords" class="font-semibold">Keywords:</label>
+            <input id="keywords" v-model="keywordsInput" name="keywords" placeholder="Enter keywords separated by commas" class="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm">
+          </div>      
+          <div class="flex flex-col space-y-2">
+            <label for="image_url" class="font-semibold">Image URL:</label>
+            <input id="image_url" v-model="item.image" name="image" placeholder="image url" class="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm">
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="description" class="font-semibold">Description:</label>
+            <textarea id="description" v-model="item.description" name="description" placeholder="description" class="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm" rows="3"></textarea>
+          </div>       
+          <button data-action="create_item" class="w-full bg-purple-700 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Create Item</button>
+        </form>
+        <!-- {{item.user_id}} - {{item.lon}} - {{item.lat}} - {{item.keywords}} - {{item.image}} - {{item.description}} -->
+  
+
+        <div class="flex justify-center bg-purple-300 w-screen mt-0" style="font-family: 'Muli', sans-serif;">
+          <div class="container flex flex-wrap justify-center items-start pt-4">
+            <div class="w-full text-center mb-4">
+              <h1 class="text-xl text-black-700 font-bold leading-none">
+                Items Created
+              </h1>
+              <p id="instruction" v-show="showInstruction" class="text-white bg-purple-700 font-bold">Please add the server domain as a query parameter to the URL, e.g., ?api=http://your-server-domain</p>
+            </div>                 
+            <!--  v-for directive  loops through each item -->
+            <ul aria-live="polite"  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">  
+              <li  v-for="item in items" :key="item.id">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+                  <img :src="item.image" alt="" class="w-full h-48 object-cover">
+                  <div class="p-4 bg-purple-700 flex-1 flex flex-col">
+                    <h3 class="text-white text-lg font-bold mb-2">{{ item.user_id }}</h3>
+                    <p class="text-white text-base mb-2" data-field="id">ID: {{ item.id }}</p>
+                    <div class="text-white text-base font-light">
+                      <p data-field="lon">Longitude: {{ item.lon }}</p>
+                      <p data-field="lat">Latitude: {{ item.lat }}</p>
+                      <p data-field="keywords">Keywords: {{ item.keywords.join(', ') }}</p>
+                      <p data-field="description">Description: {{ item.description }}</p>
+                    </div>
+                    <button 
+                      :aria-label="`Delete item ${item.id}`"
+                      class="bg-red-500 text-white mt-auto px-4 py-2 rounded shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out" 
+                      data-action="delete" 
+                      @click="deleteItem(item.id)">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+          
+    </div>
+    <!-- <div id="instruction" style="display:none">
+      <p class="text-red-500 bg-green-600 font-bold">Please add the server domain as a query parameter to the URL, e.g., ?api=http://your-server-domain</p>
+    </div> -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

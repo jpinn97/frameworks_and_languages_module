@@ -1,6 +1,14 @@
+# Use an official Node runtime as a parent image
 FROM node:16
-WORKDIR /app/
-RUN npm install express cors
-COPY *.js .
-COPY index.html .
-CMD ["node", "server.js"]
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["npm", "run", "start:dev"]
