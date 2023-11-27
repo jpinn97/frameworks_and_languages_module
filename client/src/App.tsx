@@ -6,7 +6,7 @@ import apiService from "./api_service";
 import { Item } from "./api_service";
 import ListItem from "./components/ListItem";
 import PostItemForm from "./components/PostItemForm";
-import QueryItemsForm from "./components/QueryItemsForm";
+// import QueryItemsForm from "./components/QueryItemsForm";
 import NavigationBar from "./components/NavigationBar";
 
 function App() {
@@ -17,8 +17,10 @@ function App() {
     try {
       setLoading(true);
       const itemData: Item[] = await apiService.getItems();
+      console.log("Items from server:", itemData); // Log the response from the server
       setItems(itemData);
       setLoading(false);
+      return itemData;
     } catch (err: unknown) {
       console.error(err);
     } finally {
@@ -27,19 +29,15 @@ function App() {
   };
 
   const onDeleteItem = async (id: number) => {
-    try {
-      await apiService.deleteItem(id);
-      console.log("I just deleted an item!");
-      await getItems();
-      console.log("I just refreshed the items!");
-    } catch (err: unknown) {
-      console.error(err);
-    }
+    await apiService.deleteItem(id);
+    // Check if the delete request was successful
+    console.log("I just deleted an item!");
+    await getItems(); // Fetch the updated list of items
   };
 
   useEffect(() => {
-    getItems();
-  }, []);
+    console.log("Items:", items);
+  }, [items]);
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -65,9 +63,11 @@ function App() {
               ))}
           </ul>
         </div>
+        {/*
         <div>
           <QueryItemsForm getItems={getItems} />
         </div>
+        */}
       </div>
     </div>
   );

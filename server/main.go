@@ -318,7 +318,19 @@ func DeleteItemHandler(c *gin.Context) {
 	// Check if the item with the specified ID exists
 	_, exists := items[id]
 	if exists { // If true we delete.
-		delete(items, id)
+		fmt.Printf("Before deletion: %+v\n", items)
+
+		// Find the index of the key in the keys slice
+		for i, k := range keys {
+			if k == id {
+				// Remove the key from the keys slice
+				keys = append(keys[:i], keys[i+1:]...)
+				break
+			}
+		}
+
+		delete(items, id) // Delete the item from the items map
+		fmt.Printf("After deletion: %+v\n", items)
 		c.JSON(http.StatusNoContent, nil)
 	} else { // If false we escape gracefully.
 		c.JSON(http.StatusNotFound, gin.H{
