@@ -8,14 +8,19 @@ const urlAPI = import.meta.env.VITE_API_URL;
 
 
 function NewItemForm() {
-  let img = "https://picsum.photos/150"
  
+
+  // Function to generate a new image URL
+  const generateNewImageUrl = () => {
+    return `https://picsum.photos/200/300?random=${Math.random()}`;
+  };
+
   // Initial  State Initialization
   const [formData, setFormData] = useState({
     user_id: '',
     lat: '',
     lon: '',
-    image: img,
+    image: generateNewImageUrl(),
     keywords: '',
     description: '',
   });
@@ -45,6 +50,7 @@ function NewItemForm() {
           console.log('Item created successfully.');
           setMessage('Item created successfully.');
           setIsChange(!isChange);
+          setFormData({ ...formData, image: generateNewImageUrl() }); // Set a new random image
         } else {
           console.error('Failed to create item.');
           setMessage('Failed to create item.'); }
@@ -112,7 +118,7 @@ function NewItemForm() {
       onChange={handleChange}
      />
    
-      <InputField
+   <InputField
       label="Image"
       type="url"
       name="image"
@@ -120,9 +126,9 @@ function NewItemForm() {
       value={formData.image}
       onChange={handleChange}
      />
-   
+
       <InputField
-      label="Description"
+      label="Keywords"
       type="text"
       name="keywords"
       placeholder="Enter keywords"

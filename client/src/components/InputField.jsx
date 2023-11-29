@@ -1,4 +1,4 @@
-const InputField = ({ label, type, name, value, onChange, placeholder }) => {
+const InputField = ({ label, name, type, value, onChange, placeholder }) => {
     return (
       <div className="flex items-center mb-5">
         <label htmlFor={name} className="mr-2">{label}:</label>

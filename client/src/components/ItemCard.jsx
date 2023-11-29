@@ -21,4 +21,4 @@ const ItemCard = ({ item, onDelete }) => {
     );
   };
 
-  export default ItemCard;
+  export default ItemCard
