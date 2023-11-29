@@ -50,7 +50,15 @@ function NewItemForm() {
           console.log('Item created successfully.');
           setMessage('Item created successfully.');
           setIsChange(!isChange);
-          setFormData({ ...formData, image: generateNewImageUrl() }); // Set a new random image
+          // Update the form data: reset fields and set a new random image
+         setFormData({
+            user_id: '',
+            lat: '',
+            lon: '',
+            image: generateNewImageUrl(), // Generate and set a new random image
+            keywords: '',
+            description: '',
+      });
         } else {
           console.error('Failed to create item.');
           setMessage('Failed to create item.'); }
@@ -102,7 +110,7 @@ function NewItemForm() {
 
       <InputField
       label="Longitude"
-      type="text"
+      type="number"
       name="lon"
       placeholder="Enter longitude"
       value={formData.lon}
@@ -111,7 +119,7 @@ function NewItemForm() {
     
       <InputField
       label="Latitude"
-      type="text"
+      type="number"
       name="lat"
       placeholder="Enter latitude"
       value={formData.lat}
