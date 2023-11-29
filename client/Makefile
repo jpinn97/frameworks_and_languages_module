@@ -7,7 +7,13 @@ build:
 
 # Run the Docker container
 run:
-	docker run -p 8001:8001 -d $(IMAGE_NAME)
+	docker run --rm -it -p 8001:8001 $(IMAGE_NAME)
+
+
+
+
+
+
 
 # # Stop and remove the running Docker container
 # stop:

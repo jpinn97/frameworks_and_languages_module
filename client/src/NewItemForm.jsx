@@ -100,7 +100,7 @@ function NewItemForm() {
     <div className="flex items-center mb-5" >
         <label htmlFor="lon" className="mr-2">Longitude:  </label>
         <input
-          class="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-200 outline-none focus:border-green-400"
+          className="border-b-2 border-gray-400 mx-auto flex-1 py-2 placeholder-gray-200 outline-none focus:border-green-400"
           id="lon"
           type="number"
           name="lon"

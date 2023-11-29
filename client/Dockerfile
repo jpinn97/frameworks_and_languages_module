@@ -4,7 +4,7 @@ FROM node:16
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
+# Copy package.json and package-lock.json 
 COPY package*.json ./
 
 # Install any dependencies
