@@ -7,6 +7,7 @@ const TextArea = ({ label, name, value, onChange, placeholder }) => {
           id={name}
           name={name}
           rows="3"
+          aria-label={label} 
           placeholder={placeholder}
           value={value}
           onChange={onChange}

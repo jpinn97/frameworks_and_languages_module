@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InputField from './InputField';
 import ItemCard  from './ItemCard';
 import TextArea from './TextArea';
+import CreatedItemsTitle from './CreatedItemsTitle'
 
 
 const urlAPI = import.meta.env.VITE_API_URL;
@@ -12,7 +13,7 @@ function NewItemForm() {
 
   // Function to generate a new image URL
   const generateNewImageUrl = () => {
-    return `https://picsum.photos/200/300?random=${Math.random()}`;
+    return `https://picsum.photos/450/520?random=${Math.random()}`;
   };
 
   // Initial  State Initialization
@@ -37,9 +38,9 @@ function NewItemForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const onItemSubmit = (e) => {  
+  const create_item = (e) => {  
     e.preventDefault();
-    console.log("Server Url: " + import.meta.env.VITE_API_URL),
+   // console.log("Server Url: " + import.meta.env.VITE_API_URL),
     fetch(`${urlAPI}/item`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -97,81 +98,82 @@ function NewItemForm() {
   return (
     <div  className="container flex flex-col mx-auto p-4">
 
-  <form onSubmit={onItemSubmit} className="max-w-md mx-auto bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4">
+  <form onSubmit={create_item} className="max-w-md mx-auto bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4">
  
     <InputField
-      label="UserID"
-      type="text"
-      name="user_id"
-      placeholder="Enter user_id"
-      value={formData.user_id}
-      onChange={handleChange}
-     />
+    label="UserID"
+    type="text"
+    name="user_id"
+    placeholder="Enter user_id"
+    value={formData.user_id}
+    onChange={handleChange}
+    />
 
-      <InputField
-      label="Longitude"
-      type="number"
-      name="lon"
-      placeholder="Enter longitude"
-      value={formData.lon}
-      onChange={handleChange}
-     />
+    <InputField
+    label="Longitude"
+    type="number"
+    name="lon"
+    placeholder="Enter longitude"
+    value={formData.lon}
+    onChange={handleChange}
+    />
     
-      <InputField
-      label="Latitude"
-      type="number"
-      name="lat"
-      placeholder="Enter latitude"
-      value={formData.lat}
-      onChange={handleChange}
-     />
+    <InputField
+    label="Latitude"
+    type="number"
+    name="lat"
+    placeholder="Enter latitude"
+    value={formData.lat}
+    onChange={handleChange}
+    />
    
-   <InputField
-      label="Image"
-      type="url"
-      name="image"
-      placeholder="Enter Image url"
-      value={formData.image}
-      onChange={handleChange}
-     />
+    <InputField
+    label="Image"
+    type="url"
+    name="image"
+    placeholder="Enter Image url"
+    value={formData.image}
+    onChange={handleChange}
+    />
 
-      <InputField
-      label="Keywords"
-      type="text"
-      name="keywords"
-      placeholder="Enter keywords"
-      value={formData.keywords}
-      onChange={handleChange}
-     />
+    <InputField
+    label="Keywords"
+    type="text"
+    name="keywords"
+    placeholder="Enter keywords"
+    value={formData.keywords}
+    onChange={handleChange}
+    />
       
     
     <TextArea
     label="Description" 
     type="text"
-      name="description"
-      placeholder="Enter description"
-      value={formData.description}
-      onChange={handleChange}
+    name="description"
+    aria-label="Description" 
+    placeholder="Enter description"
+    value={formData.description}
+    onChange={handleChange}
     />
     <div className="flex justify-center">
-      <button type="submit" className="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-5 rounded focus:outline-none focus:shadow-outline">
+      <button data-action="create_item" type="submit" className="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-5 rounded focus:outline-none focus:shadow-outline">
         Create Item
       </button>
     </div>
   </form>
 
-    <div aria-live="polite" className="container mx-auto mt-5 " >
-        <div className="w-full pl-5 lg:pl-2 mb-4 mt-4 justify-center">
-      <h1 className="text-3xl lg:text-4xl text-gray-600 font-extrabold flex justify-center">
-        Created Items
-      </h1>
-    </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+       <div aria-live="polite" className="container mx-auto mt-5 " >
+      
+        <CreatedItemsTitle /> 
+
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
-            <ItemCard key={item.id} item={item} onDelete={handleDeleteItem} />
+          <li key={item.id} className="flex justify-center p-8">
+            <span data-field="id" className="hidden">{item.id}</span>
+            <ItemCard item={item} onDelete={handleDeleteItem} />
+          </li>
           ))}
-        </div>
+        </ul>
       </div>
     
     </div>
