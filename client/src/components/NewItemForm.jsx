@@ -145,7 +145,7 @@ function NewItemForm() {
     onChange={handleChange}
     />
       
-    
+  
     <TextArea
     label="Description" 
     type="text"
@@ -155,6 +155,7 @@ function NewItemForm() {
     value={formData.description}
     onChange={handleChange}
     />
+  
     
     <div className="flex justify-center">
       <button data-action="create_item" type="submit" className="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-5 rounded focus:outline-none focus:shadow-outline">
