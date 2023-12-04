@@ -3,11 +3,11 @@ const ItemCard = ({ item, onDelete }) => {
       <div key={item.id} className="bg-gray-100 p-4 rounded-md justify-center">
         <div>
           <img src={item.image} alt="item" />
-          <h5>Item ID: {item.id}</h5>
-          <p>User ID: {item.user_id}</p>
-          <p>Lat: {item.lat}</p>
-          <p>Lon: {item.lon}</p>
-          <p>Description: {item.description}</p>
+          <h5 data-field="id" >Item ID: {item.id}</h5>
+          <p data-field="user_id">User ID: {item.user_id}</p>
+          <p data-field="lat">Lat: {item.lat}</p>
+          <p data-field="lon">Lon: {item.lon}</p>
+          <p data-field="description">Description: {item.description}</p>
         </div>
         <div>
           <button

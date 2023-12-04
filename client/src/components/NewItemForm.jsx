@@ -40,7 +40,7 @@ function NewItemForm() {
 
   const create_item = (e) => {  
     e.preventDefault();
-   // console.log("Server Url: " + import.meta.env.VITE_API_URL),
+    console.log("Server Url: " + urlAPI),
     fetch(`${urlAPI}/item`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -62,7 +62,14 @@ function NewItemForm() {
       });
         } else {
           console.error('Failed to create item.');
-          setMessage('Failed to create item.'); }
+          setMessage('Failed to create item.');
+          return response.json() }
+      })
+      .then((error) =>{
+        if(error){
+          console.log('Error details:', error)
+
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -163,7 +170,7 @@ function NewItemForm() {
       </button>
     </div>
   </form>
-
+          
        <div aria-live="polite" className="container mx-auto mt-5 " >
       
         <CreatedItemsTitle /> 
@@ -171,13 +178,13 @@ function NewItemForm() {
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
           <li key={item.id} className="flex justify-center p-8">
-            <span data-field="id" className="hidden">{item.id}</span>
+            {/* <span className="hidden">{item.id}</span> */}
             <ItemCard item={item} onDelete={handleDeleteItem} />
           </li>
           ))}
         </ul>
       </div>
-    
+      {message && <div className="message">{message}</div>}
     </div>
   );
 }
