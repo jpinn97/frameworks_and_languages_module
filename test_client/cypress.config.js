@@ -3,8 +3,9 @@ module.exports = defineConfig({
     e2e: {
         supportFile: false,
         specPattern: 'cypress/**/*.cy.js',
-        videoUploadOnPasses: false,
+        screenshotOnRunFailure: true,
         screenshotsFolder: 'reports/screenshots',
+        video: true,
         videosFolder: 'reports/videos',
         chromeWebSecurity: false,
         reporter: 'junit',

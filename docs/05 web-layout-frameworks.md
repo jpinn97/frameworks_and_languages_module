@@ -14,7 +14,7 @@ Objectives
 HTML Styles
 -----------
 
-Old horrible example
+Old horrible example of inline styles
 ```html
 <!doctype html>
 <html>
@@ -33,6 +33,7 @@ Old horrible example
 </html>
 ```
 Does not scale - as project grows, difficult to maintain consistency
+
 
 CSS
 ---
@@ -81,7 +82,7 @@ Refresher and some advanced features
 * class - prefixed with `.`
     * Can be applied many times
 * css selectors can be joined with 
-    * ` ` (space) And child in tree
+    * ` ` (space) any child in tree
     * `>` immediate child 
     * more...
 
@@ -200,8 +201,8 @@ Problems with CSS
         * preprocessor scripting language for css
             * Variables, functions, mixins
         * You write in something similar to CSS with cool new features and it generate css files
-            * If css your css was complicated before - with sass you've now made it even more complicated
-            * Can generate an ungodly amount of plain css as output if used unchecked
+            * If your css was complicated before - with sass you've now made it even more complicated
+            * Can generate an ungodly amount of plain css as output if used unchecked (100kb or even mb more)
         * [Sass in 100 Seconds](https://www.youtube.com/watch?v=akDIJa0AP5c) video
     * CSS Frameworks
         * People that have made MANY beautiful websites have structured their knowledge into refined tools we can use
@@ -221,9 +222,10 @@ Problems with CSS
     * Divide by 4, YEAH!
     * Divide by 6 yeah!
     * You can slice by quarter and 3rd without fractions
+    * (This was the entire thrust of the Imperial Measurement System Vs As opposed to Metric measurements)
 
 
-Bootstrap 5.2
+Bootstrap 5.3
 -------------
 
 * my old example (bootstrap 4.x)
@@ -232,43 +234,45 @@ Bootstrap 5.2
 
 * https://getbootstrap.com/
     * > Build fast, responsive sites with Bootstrap
-    * > Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins. 
+    * > Powerful, extensible, and feature-packed frontend toolkit. Build and customize with Sass, utilize prebuilt grid system and components, and bring projects to life with powerful JavaScript plugins. 
     * Responsive
         * Mobile simulation in devtools
         * Resize window
-        * Breakpoints https://getbootstrap.com/docs/5.2/layout/breakpoints/
+        * Breakpoints https://getbootstrap.com/docs/5.3/layout/breakpoints/
             * sm, md, lg
         * Grid
-            * https://getbootstrap.com/docs/5.2/layout/grid/
+            * https://getbootstrap.com/docs/5.3/layout/grid/
             * 12 Column system (base 12 rocks!)
         * Utilities
             * Try not to write your own css where possible - use the framework tools
-            * https://getbootstrap.com/docs/5.2/utilities/spacing/
-            * https://getbootstrap.com/docs/5.2/utilities/borders/
+            * https://getbootstrap.com/docs/5.3/utilities/spacing/
+            * https://getbootstrap.com/docs/5.3/utilities/borders/
+            * https://getbootstrap.com/docs/5.3/utilities/colors/#sass-maps color theme names eg primary
         * Cards
-            * https://getbootstrap.com/docs/5.2/components/card/
+            * https://getbootstrap.com/docs/5.3/components/card/
         * Navbar
-            * https://getbootstrap.com/docs/5.2/components/navbar/
+            * https://getbootstrap.com/docs/5.3/components/navbar/
             * fixed top?
         * Spinners - for loading
-            * https://getbootstrap.com/docs/5.2/components/spinners/
+            * https://getbootstrap.com/docs/5.3/components/spinners/
         * Forms
             * validation
-            * https://getbootstrap.com/docs/5.2/forms/validation/
-            * https://getbootstrap.com/docs/5.2/forms/floating-labels/
+            * https://getbootstrap.com/docs/5.3/forms/validation/ `is-invalid` automatically adds warning icons
+            * https://getbootstrap.com/docs/5.3/forms/floating-labels/
         * Toast
         * ScrollSpy
     * [Icons](https://icons.getbootstrap.com/)
-        * Via CDN as a web-font
+        * Via CDN as a web-font https://icons.getbootstrap.com/#install
     * [theme's](https://themes.getbootstrap.com/)
     * [Examples](https://getbootstrap.com/docs/5.1/examples/)
 
 
 ### Bootstrap Icons Example
 * [Icons](https://icons.getbootstrap.com/)
+    * Cheeky use of the `<i></i>` for italics with no text to be used for icons. Not it's original intention.
 ```html
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -277,10 +281,11 @@ Bootstrap 5.2
 </body>
 ```
 
+
 ### Task
 Create the following website layout in Bootstrap.
 
-```
+```text
 Navbar | Shopping basket + Game controller +  Dice
 
 ---
@@ -319,21 +324,23 @@ A button
 https://placekitten.com/
 
 ```
+
+
 ![Bootstrap preivew](./images/bootstrap_task_preview.gif)
 
-Use the documentation https://getbootstrap.com/docs/5.2/getting-started/introduction/
+Use the documentation https://getbootstrap.com/docs/5.3/getting-started/introduction/
 
 Starting `index.html` boilerplate
 ```html
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
-    <title>Bootstrap Demo</title>
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -361,7 +368,7 @@ Starting `index.html` boilerplate
 <details>
 
 ```html
-    <!-- https://getbootstrap.com/docs/5.2/components/navbar/#nav -->
+    <!-- https://getbootstrap.com/docs/5.3/components/navbar/#nav -->
     <!-- https://icons.getbootstrap.com/ -->
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
@@ -392,7 +399,7 @@ Starting `index.html` boilerplate
 
     <div class="container my-3">
 
-        <!-- https://getbootstrap.com/docs/5.2/layout/grid/#mix-and-match -->
+        <!-- https://getbootstrap.com/docs/5.3/layout/grid/#mix-and-match -->
         <div class="row">
             <div class="col-md-4">
             section1
@@ -419,7 +426,7 @@ Starting `index.html` boilerplate
     </div>
 
     <div class="container my-3">
-        <!-- https://getbootstrap.com/docs/5.2/forms/form-control/#example -->
+        <!-- https://getbootstrap.com/docs/5.3/forms/form-control/#example -->
         <div class="mb-3">
             <input type="text" class="form-control" placeholder="Full Name">
           </div>
@@ -427,13 +434,13 @@ Starting `index.html` boilerplate
         <div class="mb-3">
             <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
         </div>
-        <!-- https://getbootstrap.com/docs/5.2/components/buttons/#examples -->
+        <!-- https://getbootstrap.com/docs/5.3/components/buttons/#examples -->
         <button type="button" class="btn btn-primary">Submit</button>
     </div>
 
 
     <div class="container my-3">
-        <!-- https://getbootstrap.com/docs/5.2/components/card/#example -->
+        <!-- https://getbootstrap.com/docs/5.3/components/card/#example -->
         <div class="card" style="width: 18rem;">
             <img src="https://placekitten.com/408/287" class="card-img-top" alt="...">
             <div class="card-body">
@@ -446,6 +453,7 @@ Starting `index.html` boilerplate
 
 ```
 </details>
+
 
 Skeleton
 --------
@@ -467,7 +475,7 @@ With boilerplate below
 <html>
 <head>
     <title>Skeleton Test</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"><!-- https://cdnjs.com/libraries/skeleton -->
 </head>
 <body>
 
@@ -565,7 +573,9 @@ Other Projects
 * https://foundation.zurb.com/
 * https://bulma.io/
     * just css (no js)
+    * made by the vue team
 * [Pico CSS](https://picocss.com/) - Minimal CSS Framework for semantic HTML
+    * Just write html and the default styles just look good - see animated demo on main page
 * [simple.css](https://simplecss.org/) - A classless CSS framework that makes semantic HTML look good.
 
 
@@ -574,6 +584,7 @@ Other Addons
 
 * [AutoAnimate](https://auto-animate.formkit.com/) -  Add motion to your apps with a single line of code. 
     * LI swap, add, delete
+    * For react, vue, angular, solid
 
 
 Further Reading
@@ -587,10 +598,10 @@ Further Reading
 * [many.pw](https://many.pw/) - A table that looks good on mobile and desktop.
     * > We use tailwindcss to place both tables on the page but only show one at a time. The classes "hidden md:block large" hides the large table on small screens and "md:hidden small" does the opposite, hides the small table on large screen. 
     * ```html
-    <div class="hidden md:block large">          
+      <div class="hidden md:block large">
         {{ template "_table_large" . }}
-    </div>
-    <div class="md:hidden small">
+      </div>
+      <div class="md:hidden small">
         {{ template "_table_small" . }}
-    </div>
-        ```
+      </div>
+      ```
