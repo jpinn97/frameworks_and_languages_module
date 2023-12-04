@@ -4,7 +4,7 @@ Test Frameworks
 Objectives:
 * Understand the purpose of a unit test framework
 * Understand the purpose of a browser test framework
-* (CORS - so you can make more server progress)
+* Understand how to use the automated tests in relation to your assignment
 
 
 What are Test Frameworks
@@ -205,10 +205,15 @@ pytest test_api.py::test_root
             # disconnect/close database
 
         @pytest.fixture
-        def new_item(ENDPOINT):
+        def new_item(DB):
             # create it before the test
+            DB.create('thing')
             yield "???"   # NOTE: `yield`` is a language_feature we can discuss in future sessions
             # tidy up after test
+            DB.delete('thing')
+
+        def test_thing(new_item):
+            pass  # do test with new_item
         ```
     * [Fixture Scope](https://docs.pytest.org/en/6.2.x/fixture.html#scope-sharing-fixtures-across-classes-modules-packages-or-session)
 * Mocks
@@ -416,6 +421,14 @@ Quiz
 * https://www.socrative.com/
     * [Login -> Student Login](https://b.socrative.com/login/student/)
         * callaghan1818
+
+
+Assignment
+==========
+
+* Can run server individual test from terminal and enter debugger
+* Can run client cypress gui from terminal
+    * Can run client with exemplar server
 
 
 Solutions

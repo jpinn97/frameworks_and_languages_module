@@ -10,7 +10,7 @@ Programming Frameworks and Languages
         * [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/calaldees/frameworks_and_languages_module?quickstart=1)
             * https://codespaces.new/USERNAME/REPO?quickstart=1
         * Manage: https://github.com/codespaces/
-        * Shutdown: `gh codespace stop`
+        * Shutdown: `gh cs stop`
         * Issues:
             * Ports need to be set to `public` manually (this can't be automated and is tedious)
                 * [Allow for ports to be public by default #4068](https://github.com/orgs/community/discussions/4068)

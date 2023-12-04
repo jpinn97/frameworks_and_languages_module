@@ -10,19 +10,19 @@ This is a requirement of you Assignment 2.
     * For each of the server (30min) + client (30min)
         * (20min) Individually, view the code attempting to identify permalinks to the items listed below
         * (10min) In pairs, compare your answers, are they different?
-    * `example_server`
+    * `example_server` [example_server/app](https://github.com/calaldees/frameworks_and_languages_module/tree/main/example_server/app)
         * Where is the routing handled? (permalink)
             * Is this expandable?
         * Where are the CORS headers set? (permalink)
             * Is this good/bad? why?
         * The socket/network handling is very weak - why? (permalink)
         * What features are missing? (compare the features with a frameworks features)
-    * `example_client`
+    * `example_client` [example_client/index.html](https://github.com/calaldees/frameworks_and_languages_module/blob/main/example_client/index.html)
         * Client frameworks typically have - state, actions, views
             * Can you permalink to 
-                * an item of state (where are the items stored?)
-                * an action? (button press logic?) 
-                * some kind of view (view logic?)
+                * an item of state (where are the items stored? - this is particularly bad in this client!)
+                * an action? (button press logic?) (permalink)
+                * some kind of view (view logic?) (permalink)
         * Can you describe 'Why' the client is difficult to follow/read/understand?
         * What is `renderItemListFieldLookup` trying to do?
         * What is `.cloneNode(true)`?
@@ -33,6 +33,8 @@ This is a requirement of you Assignment 2.
 
 <details>
 
-`http_server.py` is unneeded - this is reinventing the wheel
-http://wsgi.tutorial.codepoint.net/environment-dictionary
+* `http_server.py` is unneeded - this is reinventing the wheel - Python already has stubs for this in the standard library
+    * https://docs.python.org/3/library/http.server.html
+    * https://docs.python.org/3/library/wsgiref.html
+        * http://wsgi.tutorial.codepoint.net/environment-dictionary
 </details>
