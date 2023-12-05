@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-// import { v4 as uuid } from 'uuid';
+ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ItemService {
@@ -23,8 +23,8 @@ export class ItemService {
 
   
   createItem(item: any) {
-    //const newItemId = this.generateUniqueId();
-    const newItemId = (this.idCounter++).toString(); 
+    const newItemId = this.generateUniqueId();
+    //const newItemId = (this.idCounter++).toString(); 
     const currentTime = new Date().toISOString(); // ISO 8601 format
     const expirationTime = new Date(); 
     expirationTime.setHours(expirationTime.getHours() + 24); // set expiration say For example, 24 hours from now
@@ -91,8 +91,8 @@ export class ItemService {
   }
   
 
-  // private generateUniqueId() {
-  //   // return uuid()
-  // }
+  private generateUniqueId() {
+     return uuid()
+  }
 
 }
