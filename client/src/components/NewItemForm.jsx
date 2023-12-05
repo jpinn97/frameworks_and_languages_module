@@ -38,67 +38,92 @@ function NewItemForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const create_item = (e) => {  
+  // creating an item
+  const create_item = async (e) => {  
     e.preventDefault();
-    fetch(`${urlAPI}/item`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    })
-    .then((response) => {
-      if (response.status === 201) {
-        console.log('Item created successfully.');
-        setMessage('Item created successfully.');
-        return response.json(); // Parsing the JSON response
-      } else {
-        console.error('Failed to create item.');
-        setMessage('Failed to create item.');
-        return response.json();
-      }
-    })
-    .then((newItem) => {
-      if (newItem) {
-        setItems([...items, newItem]); // Adding the new item to the items state
-        // Resetting form data
+  
+    try {
+      // Making the POST request to create a new item
+      const response = await fetch(`${urlAPI}/item`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+  
+      // Check if the response is successful
+      if (response.ok) {
+        // Parse the response to get the newly created item
+        const newItem = await response.json();
+  
+        // Update the items state to include the new item
+        setItems(prevItems => [...prevItems, newItem]);
+  
+        // Resetting form data for the next input
         setFormData({
           user_id: '',
           lat: '',
           lon: '',
-          image: generateNewImageUrl(),
+          image: generateNewImageUrl(), // Generate a new image URL for the next item
           keywords: '',
           description: '',
         });
+  
+        // Set a success message for the UI
+        setMessage('Item created successfully.');
+      } else {
+        //  where the server responds with an error status
+        console.error('Failed to create item.');
+        setMessage('Failed to create item.');
       }
-    })
-    .catch((error) => {
+    } catch (error) {
+      // Catch and handle any errors during the fetch operation
       console.error('Error:', error);
-      setMessage(`Error: ${error.message}`);      
-    });
+      setMessage(`Error: ${error.message}`);
+    }
+  
     console.log("Form posted!!!");
   };
-  
-  const fetchItems = () => {
-    fetch(`${urlAPI}/items`)
-      .then((response) => response.json())
-      .then((data) => {
-        setItems(data);
-      })
-      .catch((error) => setMessage(`Error fetching items: ${error.message}`));
-  };
 
-  const handleDeleteItem = (itemId) => {
-    fetch(`${urlAPI}/item/${itemId}`, {
-      method: "DELETE" })
-      .then((response) => {
-        if (response.status === 204) {
-          setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-        } else {
-          console.error("Error deleting item:", response.statusText);
-          setMessage(`Error deleting item: ${response.statusText}`);
-        }
-      })
-      .catch((error) => setMessage(`Error deleting item: ${error.message}`));
+
+
+  const fetchItems = async () => {
+    try {
+      const response = await fetch(`${urlAPI}/items`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setItems(data);
+    } catch (error) {
+      console.error('Error fetching items:', error);
+      setMessage(`Error fetching items: ${error.message}`);
+    }
   };
+  
+
+  const handleDeleteItem = async (itemId) => {
+    try {
+      const response = await fetch(`${urlAPI}/item/${itemId}`, {
+        method: "DELETE"
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      if (response.status === 204) {
+        setItems(prevItems => prevItems.filter(item => item.id !== itemId));
+        setMessage('Item deleted successfully.');
+      } else {
+        console.error("Error deleting item:", response.statusText);
+        setMessage(`Error deleting item: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage(`Error deleting item: ${error.message}`);
+    }
+  };
+  
        // Placeholder for UI
   return (
     <div  className="container flex flex-col mx-auto p-4">
@@ -176,7 +201,6 @@ function NewItemForm() {
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
           <li key={item.id} className="flex justify-center p-8">
-            {/* <span className="hidden">{item.id}</span> */}
             <ItemCard item={item} onDelete={handleDeleteItem} />
           </li>
           ))}
