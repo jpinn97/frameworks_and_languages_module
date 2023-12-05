@@ -88,7 +88,7 @@ Jest: For unit and integration testing of the application.
 #### Run the Docker container:
 - make run
 #### Run Test:
-- make test_client
+- make test_server
 
 
 
