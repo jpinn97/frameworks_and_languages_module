@@ -40,45 +40,43 @@ function NewItemForm() {
 
   const create_item = (e) => {  
     e.preventDefault();
-    console.log("Server Url: " + urlAPI),
     fetch(`${urlAPI}/item`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     })
     .then((response) => {
-        if (response.status === 201) {
-          console.log('Item created successfully.');
-          setMessage('Item created successfully.');
-          setIsChange(!isChange);
-          // Update the form data: reset fields and set a new random image
-         setFormData({
-            user_id: '',
-            lat: '',
-            lon: '',
-            image: generateNewImageUrl(), // Generate and set a new random image
-            keywords: '',
-            description: '',
-      });
-        } else {
-          console.error('Failed to create item.');
-          setMessage('Failed to create item.');
-          return response.json() }
-      })
-      .then((error) =>{
-        if(error){
-          console.log('Error details:', error)
-
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setMessage(`Error: ${error.message}`);      
-      });
-      console.log("Form posted!!!")
+      if (response.status === 201) {
+        console.log('Item created successfully.');
+        setMessage('Item created successfully.');
+        return response.json(); // Parsing the JSON response
+      } else {
+        console.error('Failed to create item.');
+        setMessage('Failed to create item.');
+        return response.json();
+      }
+    })
+    .then((newItem) => {
+      if (newItem) {
+        setItems([...items, newItem]); // Adding the new item to the items state
+        // Resetting form data
+        setFormData({
+          user_id: '',
+          lat: '',
+          lon: '',
+          image: generateNewImageUrl(),
+          keywords: '',
+          description: '',
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setMessage(`Error: ${error.message}`);      
+    });
+    console.log("Form posted!!!");
   };
-
-
+  
   const fetchItems = () => {
     fetch(`${urlAPI}/items`)
       .then((response) => response.json())
