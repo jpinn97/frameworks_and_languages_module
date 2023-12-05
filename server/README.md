@@ -24,50 +24,86 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
 
-```bash
-$ yarn install
-```
+## Server-Side Application with NestJS
+This server-side application is built using NestJS, a progressive Node.js framework. It provides a robust backend structure for managing items, with functionalities for creating, retrieving, updating, and deleting item data.
 
-## Running the app
+### Features
+- RESTful API endpoints for item management (create, read, update, delete).
+- Validation and transformation of request data using NestJS pipes.
+- Global exception handling for a consistent error response format.
+- CORS enabled for cross-origin requests.
 
-```bash
-# development
-$ yarn run start
 
-# watch mode
-$ yarn run start:dev
+## Getting Started
 
-# production mode
-$ yarn run start:prod
-```
 
-## Test
+### Prerequisites
+- Node.js (v16 or later)
+- npm (Node Package Manager)
+- Docker (optional for containerized setup) 
 
-```bash
-# unit tests
-$ yarn run test
+### Installation
 
-# e2e tests
-$ yarn run test:e2e
+Clone the repository:
+git clone https://github.com/aromeni/frameworks_and_languages_module.git
 
-# test coverage
-$ yarn run test:cov
-```
+Navigate to the project directory:
+cd server
 
-## Support
+Install dependencies:
+npm install
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Start the development server:
+npm run start:dev
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+The application will be running at http://localhost:8000/
 
-## License
 
-Nest is [MIT licensed](LICENSE).
+## Technologies 
+
+This application is built using the following technologies:
+
+- NestJS: For the main application framework, providing a scalable architecture.
+- Node.js: As the runtime environment for executing JavaScript code server-side.
+- TypeScript: Used for writing the application code, enhancing code quality and maintainability.
+- Docker: For containerizing the application, ensuring consistency across various environments.
+- Express.js: The underlying library for NestJS, handling HTTP requests and responses.
+Jest: For unit and integration testing of the application.
+- ESLint & Prettier: Used for code linting and formatting to maintain code quality and consistency.
+
+- Makefile: A build automation tool used to simplify Docker commands and other build steps.
+
+### Containerization and Automation
+- Dockerfile: Defines the steps for containerizing the application, creating a consistent and isolated environment for development and deployment.
+- Makefile: Used to automate common Docker commands, making it easier to build and run the Docker container.
+
+
+### Running the Application with Docker
+
+#### Build the Docker image
+- make build
+#### Run the Docker container:
+- make run
+#### Run Test:
+- make test_client
+
+
+
+
+
+Access the application at http://localhost:8000/.
+
+### Version: V1.0
+
+### Author
+Abdul Rashid Omeni
+
+
+### License
+Not under any license.
+
+
+
