@@ -70,6 +70,7 @@ function NewItemForm() {
   
         // Set a success message for the UI
         setMessage('Item created successfully.');
+        setIsChange(!isChange);
       } else {
         //  where the server responds with an error status
         console.error('Failed to create item.');
