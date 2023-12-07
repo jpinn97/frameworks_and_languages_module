@@ -18,7 +18,7 @@ Docker (for containerized deployment)
 ### Installation
 Clone the repository and install dependencies:
 
-git clone [your-repo-url]
+git clone: https://github.com/aromeni/frameworks_and_languages_module.git
 cd [your-repo-directory]
 npm install
 
