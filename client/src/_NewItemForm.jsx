@@ -5,7 +5,7 @@
 // // const urlParams = new URLSearchParams(window.location.search);
 // // const urlAPI = (urlParams.get('api') || '/api/v1').replace(/\/$/, '');
 
-// // let img = "https://picsum.photos/150"
+
 
 // function NewItemForm() {
 //   let img = "https://picsum.photos/150"

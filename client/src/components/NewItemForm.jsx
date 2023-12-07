@@ -193,18 +193,16 @@ function NewItemForm() {
         Create Item
       </button>
     </div>
-  </form>
-          
-       <div aria-live="polite" className="container mx-auto mt-5 " >
-      
+  </form>          
+       <div aria-live="polite" className="container mx-auto mt-5 " >     
         <CreatedItemsTitle /> 
-
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {items.map((item) => (
-          <li key={item.id} className="flex justify-center p-8">
-            <ItemCard item={item} onDelete={handleDeleteItem} />
-          </li>
-          ))}
+        <ul 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {items.map((item) => (
+        <li key={item.id} className="flex justify-center p-8" data-field="id" data-id={item.id}>
+        <ItemCard item={item} onDelete={handleDeleteItem} />
+        </li>
+         ))}
         </ul>
       </div>
       {message && <div className="message">{message}</div>}

@@ -11,7 +11,7 @@ const TextArea = ({ label, name, value, onChange, placeholder }) => {
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-        ></textarea>
+        ></textarea>                                                      
       </div>
     );
   };
