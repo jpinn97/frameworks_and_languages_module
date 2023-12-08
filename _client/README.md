@@ -24,7 +24,7 @@ This is a Vue.js client application for the FreeCycle platform. It allows users 
 #### Clone the repository and navigate to the client directory
 
 git clone: https://github.com/aromeni/frameworks_and_languages_module.git
-cd [your-client-directory]
+ and cd [your-client-directory]
 
 
 ## Running the Application
