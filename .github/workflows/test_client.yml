@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       #- name: checkout
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
 
       #- run: make test_client
       - run: make test_your_client_with_example_server
