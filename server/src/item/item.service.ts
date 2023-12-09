@@ -1,12 +1,19 @@
+// Import decorators and utilities from NestJS and external libraries.
 import { Injectable, NotFoundException } from '@nestjs/common';
- import { v4 as uuid } from 'uuid';
+ import { v4 as uuid } from 'uuid'; // Importing UUID library to generate unique identifiers.
 
 @Injectable()
 export class ItemService {
 
-  private idCounter = 2; // Start the counter for Id => using this temporarily
+  // private idCounter = 2; // Start the counter for Id => using this temporarily
+
+
+
+  // Object to store items. 
+  // Each key is an item ID, and the value is the item data.
   private items: Record<string, any> = {
     1: {
+      // Initial item 
       id: 1,
       user_id: 'user1234',
       keywords: ['hammer', 'nails', 'tools'],
@@ -17,11 +24,14 @@ export class ItemService {
     },
   };
 
+
+// Sample method, typically for testing or as a placeholder.
   getHello(): string {
     return 'Hello World!';
   }
 
-  
+    
+  // Method to create a new item with unique ID and timestamps.
   createItem(item: any) {
     const newItemId = this.generateUniqueId();
     //const newItemId = (this.idCounter++).toString(); 
@@ -29,27 +39,28 @@ export class ItemService {
     const expirationTime = new Date(); 
     expirationTime.setHours(expirationTime.getHours() + 24); // set expiration say For example, 24 hours from now
 
-    const newItem = {
+     // Constructing the new item object.
+     const newItem = {
       id: newItemId,
       date_from: currentTime,
       date_to: expirationTime.toISOString(),
-      ...item
+      ...item // Spread operator to include other item properties.
     };
 
     this.items[newItemId] = newItem;
     return newItem;
   }
-
+  // Method to find an item by its ID.
   findById(id: string) {
-    return this.items[id] || null;
+    return this.items[id] || null; // Return the item or null if not found.
   }
   
-
+ // Method to retrieve all items.
   findAll(): any[] {
-    return Object.values(this.items);
+    return Object.values(this.items); // Convert items object to an array.
   }
 
-  
+  // Method to delete an item by its ID.
   deleteItemById(id: string): boolean {
     if (this.items[id]) {
       delete this.items[id];
@@ -58,7 +69,7 @@ export class ItemService {
     return false; // Indicate item not found
   }
   
- 
+ // Method to update an existing item by its ID.
   updateItem( id: string, item: any) {
   if (this.items[id]) {
     this.items[id] = {...this.items[id], ...item};
@@ -68,8 +79,11 @@ export class ItemService {
   }
 }
 
+// Method to filter items based on various query parameters.
   filter(query: any) {
     return Object.values(this.items).filter((item: any) => {
+      // Filtering logic based on user_id, keyword, location, and date.
+      // Return true if item passes all filters, otherwise false.
       if (query.user_id && item.user_id !== query.user_id) {
         return false;
       }
