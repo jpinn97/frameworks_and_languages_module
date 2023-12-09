@@ -1,12 +1,13 @@
-const express = require('express');
-const app = express();
-const port = 8000;
+const express = require('express'); // Import Express framework to create a web server
+const app = express(); // Initialize an Express application
+const port = 8000; // Set the port number for the server to listen on
 
 app.use(express.json());  // bodyParser middleware to consume JSON post
 
 
 // Error handling middleware for express.json()
 app.use((err, req, res, next) => {
+   // Handles JSON parsing errors by sending a 405 response if the request body contains invalid JSON.
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     res.status(405).send('Invalid JSON format or missing fields');
   } else {
@@ -14,9 +15,11 @@ app.use((err, req, res, next) => {
   }
 });
 
-// enabling all Cors Request
+
+// Importing CORS middleware and enabling it for all routes in the Express app
 const cors = require('cors');
 app.use(cors());
+
 
 let ITEMS = [
     {
@@ -69,10 +72,12 @@ app.post('/item', (req, res) => {
   const requiredFields = ['user_id', 'keywords', 'description', 'lat', 'lon'];
 
   // Check if all required fields are present in the request body
+  // Validates that all required fields are present in the request body.
   if (!requiredFields.every(field => req.body.hasOwnProperty(field))) {
     return res.status(405).json({"Message": "Missing fields...Please investigate"});
   }
-
+  
+  // Adds a unique ID, current timestamp, and combines them with the request body's fields.
   const timestamp = new Date().toISOString();
 
   // Generate a unique ID, current timestamp, and add the request body fields
@@ -95,8 +100,10 @@ app.post('/item', (req, res) => {
   //   res.status(204).json() 
   // })
 
-
+//  DELETE route handler for '/item/:id' to delete an item by its ID.
   app.delete('/item/:id', (req, res) => {
+
+    // Extract the item ID from the request parameters.
     const itemId = req.params.id;
     
     // Check if the item exists
@@ -105,15 +112,37 @@ app.post('/item', (req, res) => {
     if (!itemExists) {
         return res.status(404).json({ message: "Item not found" });
     }
-
+    // Filter out the item with the given ID from the ITEMS array, effectively deleting it
     // Remove the item from the ITEMS array
     ITEMS = ITEMS.filter((item) => item.id != itemId);
     
+    // Return a 204 (No Content) status to indicate successful deletion without sending any content
     return res.status(204).json();
 });
 
 
 
+
+// Route to handle GET requests for '/items' with optional query parameters.
+app.get('/items', (req, res) => {
+  // Extract query parameters from the request.
+  const query = req.query;
+
+  // Filter the items array based on the query parameters.
+  const filteredItems = items.filter(item => {
+      // Each condition returns false if the item does not meet the criteria, effectively filtering it out.
+      if (query.user_id && item.user_id !== query.user_id) return false;
+      if (query.keyword && !item.keywords.some(kw => query.keyword.split(',').includes(kw))) return false;
+      if (query.lon && query.lat && (item.lon !== query.lon || item.lat !== query.lat)) return false;
+      if (query.date_from && new Date(item.date_from) < new Date(query.date_from)) return false;
+      return true; // If none of the conditions are met, the item passes all filters.
+  });
+
+  // Send the filtered list of items as a JSON response.
+  res.json(filteredItems);
+});
+
+// Start the Express server on the specified port.
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
   });
