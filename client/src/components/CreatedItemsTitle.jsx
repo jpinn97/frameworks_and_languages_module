@@ -1,3 +1,6 @@
+// Define the CreatedItemsTitle functional component.
+
+
 function CreatedItemsTitle() {
     return(
         <div className="w-full pl-5 lg:pl-2 mb-4 mt-4 justify-center">
@@ -8,4 +11,6 @@ function CreatedItemsTitle() {
     )
 }
 
+
+// Export the CreatedItemsTitle component for use in other parts of the application.
 export default CreatedItemsTitle; 

@@ -1,3 +1,5 @@
+// Define the ItemCard functional component with destructured props.
+
 const ItemCard = ({ item, onDelete }) => {
     return (
       <div key={item.id} className="bg-gray-100 p-4 rounded-md justify-center">
@@ -19,4 +21,6 @@ const ItemCard = ({ item, onDelete }) => {
     );
   };
 
+
+  // Export the ItemCard component for reuse in other parts of the application.
   export default ItemCard;

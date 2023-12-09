@@ -1,3 +1,4 @@
+// Define the InputField functional component with destructured props.
 const InputField = ({ label, name, type, value, onChange, placeholder }) => {
     return (
       <div className="flex items-center mb-5">
@@ -16,5 +17,5 @@ const InputField = ({ label, name, type, value, onChange, placeholder }) => {
   };
 
   
-
+// Export the InputField component for reuse in other parts of the application.
 export default InputField;

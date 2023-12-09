@@ -1,4 +1,9 @@
+// Define the TextArea functional component with destructured props.
+// Props include label, name, value, onChange, and placeholder.
+
+
 const TextArea = ({ label, name, value, onChange, placeholder }) => {
+  // Return JSX content.
     return (
       <div className="flex items-center mb-5">
         <label htmlFor={name} className="mr-2">{label}:</label>
@@ -16,4 +21,7 @@ const TextArea = ({ label, name, value, onChange, placeholder }) => {
     );
   };
 
+
+
+  // Export the TextArea component for reuse in other parts of the application.
   export default TextArea;

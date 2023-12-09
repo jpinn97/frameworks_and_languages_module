@@ -4,10 +4,10 @@ import ItemCard  from './ItemCard';
 import TextArea from './TextArea';
 import CreatedItemsTitle from './CreatedItemsTitle'
 
-
+// Environment variable for the API URL.
 const urlAPI = import.meta.env.VITE_API_URL;
 
-
+// define the NewItemForm functional component.
 function NewItemForm() {
  
 
@@ -16,7 +16,7 @@ function NewItemForm() {
     return `https://picsum.photos/450/520?random=${Math.random()}`;
   };
 
-  // Initial  State Initialization
+  /// Initialize state for form data, change detection, items list, and message.
   const [formData, setFormData] = useState({
     user_id: '',
     lat: '',
@@ -32,13 +32,14 @@ function NewItemForm() {
   useEffect(() => {
     fetchItems();
   }, [isChange]);
- 
+
+   // Handle form input changes.
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // creating an item
+  // POST request to create a new item.
   const create_item = async (e) => {  
     e.preventDefault();
   
@@ -86,7 +87,7 @@ function NewItemForm() {
   };
 
 
-
+ // Fetch items from the API.
   const fetchItems = async () => {
     try {
       const response = await fetch(`${urlAPI}/items`);
@@ -101,7 +102,7 @@ function NewItemForm() {
     }
   };
   
-
+// DELETE request to remove an item.
   const handleDeleteItem = async (itemId) => {
     try {
       const response = await fetch(`${urlAPI}/item/${itemId}`, {
@@ -111,7 +112,7 @@ function NewItemForm() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+  // Check for successful response... if OK
       if (response.status === 204) {
         setItems(prevItems => prevItems.filter(item => item.id !== itemId));
         setMessage('Item deleted successfully.');
@@ -125,7 +126,7 @@ function NewItemForm() {
     }
   };
   
-       // Placeholder for UI
+        // JSX rendering of the form and item cards.
   return (
     <div  className="container flex flex-col mx-auto p-4">
 
@@ -193,21 +194,27 @@ function NewItemForm() {
         Create Item
       </button>
     </div>
-  </form>          
+  </form>      
+   {/* Display title for created items */}    
        <div aria-live="polite" className="container mx-auto mt-5 " >     
         <CreatedItemsTitle /> 
+         {/* Listing of created items */}
         <ul 
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item) => (
+          // Mapping each item to an ItemCard component.
         <li key={item.id} className="flex justify-center p-8" data-field="id" data-id={item.id}>
         <ItemCard item={item} onDelete={handleDeleteItem} />
         </li>
          ))}
         </ul>
       </div>
+        {/* Message display for feedback on operations like create or delete */}
       {message && <div className="message">{message}</div>}
     </div>
   );
 }
 
+
+// Export the NewItemForm component for use in other parts of the application.
 export default NewItemForm;
