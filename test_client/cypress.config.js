@@ -5,8 +5,7 @@ module.exports = defineConfig({
         specPattern: 'cypress/**/*.cy.js',
         screenshotOnRunFailure: true,
         screenshotsFolder: 'reports/screenshots',
-        video: true,
-        videosFolder: 'reports/videos',
+        video: false,
         chromeWebSecurity: false,
         reporter: 'junit',
         reporterOptions: {
