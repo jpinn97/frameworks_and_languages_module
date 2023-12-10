@@ -43,7 +43,7 @@ test_example_client:  ##
 	${DOCKER_COMPOSE_EXAMPLE_TEST} down
 
 cypress_gui:  ## Launch local cypress from container (requires an XServer and DISPLAY env)
-	${DOCKER_COMPOSE_EXAMPLE_TEST} run --rm --env DISPLAY test_client open --project . --e2e --browser electron 
+	${DOCKER_COMPOSE_EXAMPLE_TEST} run --rm --env DISPLAY test_client open --project . --e2e --browser chromium 
 	${DOCKER_COMPOSE_EXAMPLE_TEST} down
 cypress_cmd:
 	# Use with `CYPRESS_CMD="stuff" make cypress_cmd`

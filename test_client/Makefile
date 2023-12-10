@@ -6,10 +6,11 @@ run:
 	# export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
 	# DISPLAY=$IP:0
 	docker run -it --rm \
-		-e DISPLAY \
+		-e DISPLAY=$DISPLAY \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}:/tests:ro \
 		-w /tests \
 		--entrypoint cypress \
 		cypress/included:8.3.0 \
-			open \
-			--project .
+		open --browser chrome --project .
+
