@@ -18,6 +18,7 @@ export class ItemService {
       user_id: 'user1234',
       keywords: ['hammer', 'nails', 'tools'],
       description: 'A hammer and nails set',
+      image: "http://placekitten.com/100/100",
       lat: 1,
       lon: 1,
       date_from: '2021-11-22T08:22:39.067408',

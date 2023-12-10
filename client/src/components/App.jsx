@@ -1,7 +1,6 @@
 // Import the NewItemForm and Heading components from their respective files.
 
 import NewItemForm from "./NewItemForm"
-import NewItemForm from "./NewItemForm"
 import Heading  from "./Heading";
 
 
