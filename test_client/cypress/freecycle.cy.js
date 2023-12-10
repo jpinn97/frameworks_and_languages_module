@@ -78,7 +78,9 @@ describe('FreeCycle', () => {
 			image: 'http://placekitten.com/100/101',
 			keywords: 'test',
 		})
+		cy.wait(1000);
 		cy.get(`[data-action="create_item"]`).filter(':visible').click()
+		cy.wait(1000);
 		cy.get(`ul`).filter(':visible').contains('this should be visible').should('exist')
 	})
 
