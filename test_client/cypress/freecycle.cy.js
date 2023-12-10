@@ -41,7 +41,9 @@ describe('FreeCycle', () => {
 
 	beforeEach(() => {
 		//const baseUrl = Cypress.env("CYPRESS_BASE_URL") || "http://localhost:8001"; // Default to an empty string if not set
-		cy.visit("http://localhost:8001"); // Navigate to Env variable `CYPRESS_BASE_URL`
+
+		cy.visit('http://client:8001/?api=http://server:8000'); // Navigate to Env variable `CYPRESS_BASE_URL`
+		
 	})
 
 	// Tests -------------------------------------------------------------------
