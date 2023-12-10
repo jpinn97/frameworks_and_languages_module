@@ -2,7 +2,7 @@
 
 Description
 
-This is a technical proposal for Freecycle-inc's Server and Client. The server is wrote in Golang, and uses the Gin framework to build a RESTful api for the backend implementation of this project. The Client frontend uses primarily React, aswell Javascript and Typescript. It is bundled together with the Vite framework.
+This is a technical proposal for Freecycle-inc's Server and Client. The server is wrote in Golang, and uses the Gin framework to build a RESTful api for the backend implementation of this project. The Client frontend uses primarily React, aswell as Javascript, Typescript and Tailwind CSS. It is bundled together with the Vite framework.
 
 ## Prerequisites
 
