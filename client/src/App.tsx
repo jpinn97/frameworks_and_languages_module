@@ -45,29 +45,27 @@ function App() {
   return (
     <div>
       <NavigationBar />
-      <div className="max-w-screen-xl flex flex-wrap items-top justify-between mx-auto p-4">
-        <div>
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:col-span-1">
           <PostItemForm onSubmit={getItems} />
         </div>
-        <div className="overflow-y-hidden">
-          <ul className="list-inside list-none p-4">
-            {items &&
-              items.map((item) => (
-                <li>
-                  <ListItem
-                    key={item.id}
-                    onDeleteItem={onDeleteItem}
-                    item={item}
-                  />
-                </li>
-              ))}
-          </ul>
+        <div className="md:col-span-1 flex flex-wrap">
+          {items &&
+            items.map((item) => (
+              <div className="w-full sm:w-1/2 md:w-1/3">
+                <ListItem
+                  key={item.id}
+                  onDeleteItem={onDeleteItem}
+                  item={item}
+                />
+              </div>
+            ))}
+          {/*
+  <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+    <QueryItemsForm getItems={getItems} />
+  </div>
+  */}
         </div>
-        {/*
-        <div>
-          <QueryItemsForm getItems={getItems} />
-        </div>
-        */}
       </div>
     </div>
   );
