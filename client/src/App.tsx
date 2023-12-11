@@ -45,18 +45,27 @@ function App() {
   return (
     <div>
       <NavigationBar />
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="md:col-span-1">
-          <PostItemForm onSubmit={getItems} />
-        </div>
-        <div className="md:col-span-1 flex flex-wrap">
-          {items &&
-            items.map((item) => (
-              <div className="w-full sm:w-1/2 md:w-1/3" key={item.id}>
-                {" "}
-                <ListItem onDeleteItem={onDeleteItem} item={item} />
-              </div>
-            ))}
+
+      {/* Main content container */}
+      <div className="container mx-auto p-4">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-gray-200 p-4">
+            <PostItemForm onSubmit={getItems} />
+          </div>
+          <div className="bg-gray-300 p-4">
+            {items && (
+              <ul className="flex flex-wrap -mx-2">
+                {items.map((item) => (
+                  <li
+                    key={item.id}
+                    className="px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3"
+                  >
+                    <ListItem onDeleteItem={onDeleteItem} item={item} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>

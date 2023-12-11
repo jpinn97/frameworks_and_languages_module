@@ -15,8 +15,8 @@ function ListItem({ onDeleteItem, item }: ListItemProps) {
         <br />
         <ul>
           Keywords:{" "}
-          {Object.keys(item.keywords).map((keyword, index) => (
-            <li key={index}>- {keyword}</li>
+          {Object.keys(item.keywords).map((keyword) => (
+            <li key={keyword}>- {keyword}</li>
           ))}
         </ul>
         <img className="object-scale-down h-48 w-96" src={item.image}></img>
