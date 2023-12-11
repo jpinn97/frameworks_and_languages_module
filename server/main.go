@@ -17,6 +17,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
+	"github.com/russross/blackfriday/v2"
 )
 
 // Struct for Item schema that is GET from server.
@@ -219,8 +220,11 @@ func RootHandler(c *gin.Context) {
 		return
 	}
 
-	// Write README.md to response.
-	c.Data(http.StatusOK, "text/html; charset=utf-8", readmeBytes)
+	// Convert Markdown to HTML.
+	htmlContent := blackfriday.Run(readmeBytes) // https://github.com/russross/blackfriday/v2 to render md to html for clients.
+
+	// Write HTML to response.
+	c.Data(http.StatusOK, "text/html; charset=utf-8", htmlContent)
 }
 
 func PostItemHandler(c *gin.Context) {

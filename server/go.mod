@@ -29,6 +29,7 @@ require (
 	github.com/relvacode/iso8601 v1.3.0
 	github.com/rs/cors v1.10.1 // indirect
 	github.com/rs/cors/wrapper/gin v0.0.0-20230929213613-e19471c92b1c
+	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	golang.org/x/arch v0.5.0 // indirect

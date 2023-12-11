@@ -52,19 +52,11 @@ function App() {
         <div className="md:col-span-1 flex flex-wrap">
           {items &&
             items.map((item) => (
-              <div className="w-full sm:w-1/2 md:w-1/3">
-                <ListItem
-                  key={item.id}
-                  onDeleteItem={onDeleteItem}
-                  item={item}
-                />
+              <div className="w-full sm:w-1/2 md:w-1/3" key={item.id}>
+                {" "}
+                <ListItem onDeleteItem={onDeleteItem} item={item} />
               </div>
             ))}
-          {/*
-  <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-    <QueryItemsForm getItems={getItems} />
-  </div>
-  */}
         </div>
       </div>
     </div>

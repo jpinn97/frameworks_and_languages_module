@@ -43,11 +43,11 @@ make run
 
 ### Server
 
-The server will be running on the host machine at `localhost:8080`. Please see the openapi.yaml file for the api specification, endpoints and request/response schemas.
+The server will be running on the host machine at `localhost:8000`. Please see the openapi.yaml file for the api specification, endpoints and request/response schemas.
 
 ### Client
 
-The client will be running on the host machine at `localhost:3000`. The client is a single page application, and will be served by the server. Usage of the client can be found as according to the specification in the openapi.yaml file.
+The client will be running on the host machine at `localhost:8001`. The client is a single page application, and will be served by the server. Usage of the client can be found as according to the specification in the openapi.yaml file.
 
 Adding valid information into the form and clicking submit will send a request to the server adding the item. The client will then update the page with the new item.
 
