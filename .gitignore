@@ -19,3 +19,8 @@ yarn.lock
 
 # generated files for this repo
 openapi.html
+
+# generated files for the docs
+
+*.RData
+*.Rhistory
