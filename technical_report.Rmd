@@ -130,6 +130,10 @@ Take for example the functions [`renderItems`](https://github.com/calaldees/fram
 
 The DOM is directly manipulated to manage state, for instance the `document.querySelector` may not be performative on large trees. The DOM is a hierarchical tree structure, the `document.querySelector` function will traverse the entire tree to find the element. In a commercial setting, this way of rendering the fetched data and DOM is not scalable or performant, moreover, as the application grows teams will struggle to test and refactor due to the increasing complexity. The list is returned in full, some clients devices may suffer slower render times as the large list is rendered in full, due to the iterative and linear nature of the loop.
 
+### Issue 3
+
+The way the server handles lat / lon is completely wrong. haversine/formula or idealy a package should be used.
+
 ### Recommendation
 
 The existing implementation hand-rolls various features such as decoding and parsing HTTP requests, that are already implemented in frameworks. Jamming code together so that it works is not a scalable solution, it's not time efficient to develop custom functionality that is already available in frameworks. Frameworks are designed to provide a higher level of abstraction, React state management [@StateSnapshotReact2024] for example would be better than the direct DOM manipulating being used, React's declarative approach is used to describe what the UI should look like, and React handles the DOM manipulation for us.
@@ -227,16 +231,15 @@ Gin middleware is preferred over the standard Go `net/http` package:
 - pre-built logging, recovery, and static file serving middleware.
 - Less cognitive load, the `net/http` package requires the developer to understand the `http.Handler` interface more deeply.
 
-### Gin Context
+### Automatic Binding of JSON to custom struct
+
+
+The `gin.Context` struct is a simplified, and more developer friendly interface to the `net/http` package. It provides a number of methods for HTTP requests and response handling, data binding, rendering and middleware support.
 
 Feature Reference:
 
--   **Feature Name**: `gin.Context` \
--   **Located in**: `server/main.go` \
--   **Source Code**: [Link to
-    File](https://github.com/jpinn97/frameworks_and_languages_module/blob/b4f100c7aaab889d54233723247817b870699c80/server/main.go#L44-L149) \
-
-The `gin.Context` struct is a simplified, and more developer friendly interface to the `net/http` package. It provides a number of methods for HTTP requests and response handling, data binding, rendering and middleware support.
+-   **Feature Name**: `gin.Context` Automatic Model/Binding of JSON to custom struct \
+-   **Located in**: `server/main.go` 
 
 ``` Gin
 234. // Call ShouldBindJSON to attempt to bind the received JSON to Item struct.
@@ -260,15 +263,24 @@ The `gin.Context` struct is a simplified, and more developer friendly interface 
 43.  }
 ```
 
-The `gin.Context` allows automatic binding and validation of JSON data to a struct, Gin provides the additional `binding` tag option to the struct fields [@BindFormdataRequest2022]. This allows the developer to specify the required fields, and the `ShouldBindJSON` [@ModelBindingValidation2022] function will return an error if the required fields are missing. This saves development time, as Go requires significantly more boilerplate to achieve the same functionality through unmarshaling and manual validation.
+The `gin.Context` allows automatic binding and validation of JSON data to a custom struct, Gin provides the additional `binding` tag option to the struct fields [@BindFormdataRequest2022]. This allows the developer to specify the required fields, and the `ShouldBindJSON` [@ModelBindingValidation2022] function will return an error if the required fields are missing. This saves development time, as Go requires significantly more boilerplate to achieve the same functionality through unmarshaling and manual validation.
 
-### (name of Feature 3)
+### Built-in Rendering
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+-   **Feature Name**: `c.Data` \
+-   **Located in**: `server/main.go` \
+-   **Source Code**: [Link to
+    Function](https://github.com/jpinn97/frameworks_and_languages_module/blob/b4f100c7aaab889d54233723247817b870699c80/server/main.go#L221) \
+-   **Feature Documentation**: [Link to Feature](https://gin-gonic.com/docs/examples/html-rendering/)
+
+Gin's c.Data method is a built-in rendering feature for sending raw data as an HTTP response. It allows setting custom Content-Type headers and directly writing byte data to the response body, useful for various content types including HTML.
+
+``` Gin
+220.	// Write README.md to response.
+221.	c.Data(http.StatusOK, "text/html; charset=utf-8", readmeBytes)
+```
+
+This feature streamlines sending custom content types, like HTML, without manual data writing and header management. It simplifies response generation via an API, enhances flexibility, and is beneficial when serving non-JSON content, such as images or HTML. This allows us to serve the README.md on Github, and statically at the root of the server as HTML. Moreover, this feature works for other data types such as JSON, XML, YAML, and Protobuf which provides additionally extensibility and flexibility.
 
 ## Server Language Features
 
@@ -276,11 +288,7 @@ Server Language: Golang (Go) [@DocumentationGoProgramming2023]
 
 ### (name of Feature 1)
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+Go routines
 
 ### (name of Feature 2)
 
