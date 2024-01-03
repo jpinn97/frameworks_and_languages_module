@@ -10,6 +10,18 @@
   file = {C:\Users\test\Zotero\storage\GEWAHEF9\what-is-backlog-in-tcp-connections.html}
 }
 
+@misc{BindFormdataRequest2022,
+  title = {Bind Form-Data Request with Custom Struct},
+  year = {2022},
+  month = apr,
+  journal = {Gin Web Framework},
+  url = {https://gin-gonic.com/docs/examples/bind-form-data-request-with-custom-struct/},
+  urldate = {2024-01-03},
+  abstract = {The follow example using custom struct: type StructA struct \{ FieldA string `form:"field\_a"` \} type StructB struct \{ NestedStruct StructA FieldB string `form:"field\_b"` \} type StructC struct \{ NestedStructPointer *StructA FieldC string `form:"field\_c"` \} type StructD struct \{ NestedAnonyStruct struct \{ FieldX string `form:"field\_x"` \} FieldD string `form:"field\_d"` \} func GetDataB(c *gin.Context) \{ var b StructB c.Bind(\&b) c.JSON(200, gin.H\{ "a": b.NestedStruct, "b": b.FieldB, \}) \} func GetDataC(c *gin.Context) \{ var b StructC c.\vphantom\}},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\QQ4DCF3J\bind-form-data-request-with-custom-struct.html}
+}
+
 @misc{CustomMiddleware2022,
   title = {Custom {{Middleware}}},
   year = {2022},
@@ -42,6 +54,18 @@
   urldate = {2024-01-02},
   langid = {english},
   file = {C:\Users\test\Zotero\storage\FYTY37MD\doc.html}
+}
+
+@misc{ModelBindingValidation2022,
+  title = {Model Binding and Validation},
+  year = {2022},
+  month = apr,
+  journal = {Gin Web Framework},
+  url = {https://gin-gonic.com/docs/examples/binding-and-validation/},
+  urldate = {2024-01-03},
+  abstract = {To bind a request body into a type, use model binding. We currently support binding of JSON, XML, YAML and standard form values (foo=bar\&boo=baz). Gin uses go-playground/validator/v10 for validation. Check the full docs on tags usage here. Note that you need to set the corresponding binding tag on all fields you want to bind. For example, when binding from JSON, set json:"fieldname". Also, Gin provides two sets of methods for binding:},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\AKQ9MVFU\binding-and-validation.html}
 }
 
 @misc{NetIncreaseSOMAXCONN2019,

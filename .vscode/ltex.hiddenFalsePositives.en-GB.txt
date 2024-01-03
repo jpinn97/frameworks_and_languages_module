@@ -1,0 +1,1 @@
+{"rule":"THE_WORSE_OF","sentence":"^\\QThe \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q function is then called, and the request body is parsed, none the wiser of the middleware modifications.\\E$"}
