@@ -10,15 +10,52 @@
   file = {C:\Users\test\Zotero\storage\GEWAHEF9\what-is-backlog-in-tcp-connections.html}
 }
 
-@misc{NetIncreaseSOMAXCONN,
+@misc{CustomMiddleware2022,
+  title = {Custom {{Middleware}}},
+  year = {2022},
+  month = apr,
+  journal = {Gin Web Framework},
+  url = {https://gin-gonic.com/docs/examples/custom-middleware/},
+  urldate = {2024-01-03},
+  abstract = {func Logger() gin.HandlerFunc \{ return func(c *gin.Context) \{ t := time.Now() // Set example variable 	c.Set("example", "12345") // before request  c.Next() // after request 	latency := time.Since(t) log.Print(latency) // access the status we are sending 	status := c.Writer.Status() log.Println(status) \} \} func main() \{ r := gin.New() r.Use(Logger()) r.GET("/test", func(c *gin.Context) \{ example := c.MustGet("example").(string) // it would print: "12345" 	log.Println(example) \}) // Listen and serve on 0.\vphantom\}},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\6WHVDE8D\custom-middleware.html}
+}
+
+@misc{Documentation2022,
+  title = {Documentation},
+  year = {2022},
+  month = apr,
+  journal = {Gin Web Framework},
+  url = {https://gin-gonic.com/docs/},
+  urldate = {2024-01-02},
+  abstract = {Gin Web Framework},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\FZ8H5VBW\docs.html}
+}
+
+@misc{DocumentationGoProgramming2023,
+  title = {Documentation - {{The Go Programming Language}}},
+  year = {2023},
+  month = dec,
+  url = {https://go.dev/doc/},
+  urldate = {2024-01-02},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\FYTY37MD\doc.html}
+}
+
+@misc{NetIncreaseSOMAXCONN2019,
   title = {Net: Increase {{SOMAXCONN}} to 4096 - Kernel/Git/Torvalds/Linux.Git - {{Linux}} Kernel Source Tree},
+  year = {2019},
+  month = oct,
   url = {https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=19f92a030ca6d772ab44b22ee6a01378a8cb32d4},
   urldate = {2023-12-30},
   file = {C:\Users\test\Zotero\storage\U98MB4K9\commit.html}
 }
 
-@misc{SocketLowlevelNetworking,
+@misc{SocketLowlevelNetworking2023,
   title = {Socket {\textemdash} {{Low-level}} Networking Interface},
+  year = {2023},
   journal = {Python documentation},
   url = {https://docs.python.org/3/library/socket.html},
   urldate = {2023-12-30},
@@ -26,11 +63,35 @@
   file = {C:\Users\test\Zotero\storage\9LTQRBW8\socket.html}
 }
 
-@misc{UnicodeDecodeErrorPythonWiki,
+@misc{StateSnapshotReact2024,
+  title = {State as a {{Snapshot}} {\textendash} {{React}}},
+  year = {2024},
+  url = {https://react.dev/learn/state-as-a-snapshot},
+  urldate = {2024-01-02},
+  abstract = {The library for web and native user interfaces},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\8B4KVDY5\state-as-a-snapshot.html}
+}
+
+@misc{UnicodeDecodeErrorPythonWiki2008,
   title = {{{UnicodeDecodeError}} - {{Python Wiki}}},
+  year = {2008},
+  month = nov,
   url = {https://wiki.python.org/moin/UnicodeDecodeError},
   urldate = {2024-01-01},
   file = {C:\Users\test\Zotero\storage\AAN563EI\UnicodeDecodeError.html}
+}
+
+@misc{UsingMiddleware2022,
+  title = {Using Middleware},
+  year = {2022},
+  month = apr,
+  journal = {Gin Web Framework},
+  url = {https://gin-gonic.com/docs/examples/using-middleware/},
+  urldate = {2024-01-03},
+  abstract = {func main() \{ // Creates a router without any middleware by default 	r := gin.New() // Global middleware 	// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN\_MODE=release. 	// By default gin.DefaultWriter = os.Stdout 	r.Use(gin.Logger()) // Recovery middleware recovers from any panics and writes a 500 if there was one. 	r.Use(gin.Recovery()) // Per route middleware, you can add as many as you desire.\vphantom\}},
+  langid = {english},
+  file = {C:\Users\test\Zotero\storage\GK6BBUA6\using-middleware.html}
 }
 
 @article{UTF82023,
