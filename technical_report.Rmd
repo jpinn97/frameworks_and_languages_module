@@ -91,7 +91,7 @@ while int(request.get('content-length', 0)) > len(request['body']):
     request['body'] += conn.recv(65535).decode('utf8')
 ```
 
-The function struggles with handling TCP data that arrives in fragments, attempting to make additional recv calls to gather more data. It relies on the content-length header to decide if further recv calls are necessary. However, this approach fails to properly decode non-UTF-8 data, such as binary image data. \
+The function struggles with handling TCP data that arrives in fragments, attempting to make additional recv calls to gather more data. It relies on the content-length header to decide if further recv calls are necessary. However, this approach fails to properly decode non-UTF-8 data, such as binary image data. 
 Additionally, UTF-8's variable-width encoding has multibyte characters such as "C3 A9" occupying two bytes and is "é" [@UTF82023] that might be split across different packets which when decoded could form an illegal sequence, leading to a UnicodeDecodeError [@UnicodeDecodeErrorPythonWiki2008]. As indicated in the comments on line 121, the actual body size can become larger than what the content-length suggests as data size increases once decoded. The server will drop the connection if the content-length is exceeded, which will result in a broken image or data corruption.
 
 Finally, the function has no error handling in the case of timeouts or resource exhaustion.
@@ -134,12 +134,60 @@ In a commercial setting, this way of rendering the fetched data and DOM is not s
 
 ### Issue 3
 
-The way the server handles lat / lon is completely wrong. haversine/formula or idealy a package should be used.
+Class Reference:
+-  **Class Names**: `LatLon`, `LatLonRange` \
+-  **Located in**: `example_client/index.html` \
+-  **Source Code**: [Link to
+    Classes](https://github.com/calaldees/frameworks_and_languages_module/blob/0f55f66639768032a3f0c0d795e6517ca52f0a11/example_server/app/datamodel.py#L4-L33)
+
+The `LatLon` and `LatLonRange` classes are used to create tuples of coordinates, and later to test if an item is within the range of another item. These classes are very basic,
+and have no validation, are very basic and have very little regard to efficiency.
+
+``` python
+class LatLon(NamedTuple):
+    lat: float
+    lon: float
+    @staticmethod
+    def from_dict(data):
+        try:
+            return LatLon(*tuple(float(data[i]) for i in ('lat', 'lon')))
+        except (KeyError, TypeError):
+            return None
+class LatLonRange(NamedTuple):
+    lat: float
+    lon: float
+    radius: float
+    @staticmethod
+    def from_dict(data):
+        try:
+            return LatLonRange(*tuple(float(data[i]) for i in ('lat', 'lon', 'radius')))
+        except (KeyError, TypeError):
+            return None
+    def in_range(self, latlon:LatLon) -> bool:
+        if isinstance(latlon, dict):
+            latlon = LatLon.from_dict(latlon)
+        if not latlon:
+            return False
+        return \
+            (latlon.lat > self.lat - self.radius) and \
+            (latlon.lat < self.lat + self.radius) and \
+            (latlon.lon > self.lon - self.radius) and \
+            (latlon.lon < self.lon + self.radius) and \
+        True # <---------- SERVES NO PURPOSE
+```
+Firstly, the `LatLon` class has no validation, allowing invalid coordinates to be created.
+The `in_range` function has linear performance scaling, as it will perform 4 comparisons for every item in the database. In a commercial setting, for this type of application, planning for hundreds of thousands if not millions of items is ideal. At this level, the performance of the `in_range` function will be unacceptable, and will need to be refactored to use a more efficient algorithm as wasted resources will be costly, and also lead to a poor customer experience.
+A better approach would be to use an interim solution like GeoPandas [@DocumentationGeoPandasUntagged2024] before moving to a more scalable solution like PostGIS [@PostGIS2023]. GeoPandas is a Python library that provides high-performance, easy-to-use data structures and operations for manipulating geospatial data. Such as R-tree, Quadtree, and KD-tree spatial indexes, that work by reducing the overall search space and time. These indexes make it easier for the algorithm to find nearer items.
+
+In the future once the commercial application has grown to need a fully fledged database, PostGIS is a spatial database extender for PostgreSQL object-relational database. It adds support for geographic objects allowing location queries to be run in SQL. PostGIS provides spatial indexing features just like GeoPandas but on a larger scale. It also provides functions like converting address to lat/long, which would be useful for the application.
+
 
 ### Recommendation
 
 The existing implementation hand-rolls various features such as decoding and parsing HTTP requests, that are already implemented in frameworks. Jamming code together so that it works is not a scalable solution, it's not time efficient to develop custom functionality that is already available in frameworks. 
 Frameworks are designed to provide a higher level of abstraction, React state management [@StateSnapshotReact2024] for example would be better than the direct DOM manipulating being used, React's declarative approach is used to describe what the UI should look like, and React handles the DOM manipulation for us.
+
+Considering the complex nature of the application, and commercial scalabality concerns, a database will no doubt be required, which will neccessitate the usage of something akin to PostGIS.
 
 ## Server Framework Features
 
