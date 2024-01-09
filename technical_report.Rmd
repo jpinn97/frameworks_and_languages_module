@@ -109,7 +109,7 @@ A number of functions such as `renderItems`, `renderDataToTemplate`, `attachDele
 
 Take for example the functions [`renderItems`](https://github.com/calaldees/frameworks_and_languages_module/blob/0f55f66639768032a3f0c0d795e6517ca52f0a11/example_client/index.html#L402-L418) and `render_items`:
 
-``` javascript
+``` Javascript
 function renderItems(data) {
     const $item_list = document.querySelector(`[data-page="items"] ul`);
     const new_item_element = () => document.querySelector(`[data-page="items"] li`).cloneNode(true);
@@ -442,49 +442,212 @@ These primitives are required for handling safe concurrent acccess to shared-res
 
 ## Client Framework Features
 
-### (name of Feature 1)
+### Component Based Architecture
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+In React, a functional component is a Javascript function that is designed to be modular and reusable. Each component is a function that returns a React element, their state, logic and rendering is encapsulated within the function, enhancing maintainability and organization of the codebase.
 
-### (name of Feature 2)
+Component Reference:
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+-   **Component Name**: `App` \
+-   **Located in**: `client/src/App.tsx` \
+-   **Source Code**: [Link to
+    Reference](https://github.com/jpinn97/frameworks_and_languages_module/blob/7c30c485d2d33c0666fd4f8360ebcb1c40d07a7e/client/src/App.tsx#L45-L72)
 
-### (name of Feature 3)
+``` Javascript
+return (
+    <div>
+      <NavigationBar />
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+      {/* Main content container */}
+      <div className="container mx-auto p-4">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-gray-200 p-4">
+            <PostItemForm onSubmit={getItems} />
+          </div>
+          <div className="bg-gray-300 p-4">
+            {items && (
+              <ul className="flex flex-wrap -mx-2">
+                {items.map((item) => (
+                  <li
+                    key={item.id}
+                    className="px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3"
+                  >
+                    <ListItem onDeleteItem={onDeleteItem} item={item} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+```
 
+The `App` component splits the UI into dividable components, `ListItem`, `NavigationBar`, and `PostItemsForm`. This declarative way of describing the UI, is much more intuitive and readable than any verbose DOM management. Furthermore, components allow us to reduce DOM manipulation and improve state management. If we recieve a list of items from the server, we can simply update the state of the App component, and the `ListItem` component will automatically re-render with the new data.
+
+
+### State
+
+Feature Reference:
+
+-   **Feature Name**: `State` \
+-   **Located in**: `client/src/App.tsx` \
+-   **Source Code**: [Link to
+    Reference](https://github.com/jpinn97/frameworks_and_languages_module/blob/7c30c485d2d33c0666fd4f8360ebcb1c40d07a7e/client/src/App.tsx#L13-L40)
+
+State is a feature that components use to store and manage data dynamically. State is managed primarily by hooks, when a item is posted the client will check the server for any updated items, and update the state of the `App` component. This will automatically re-render the `ListItem` child components with the new data.
+
+``` Javascript
+  const [items, setItems] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const getItems = async () => {
+    try {
+      setLoading(true);
+      const itemData: Item[] = await apiService.getItems();
+      console.log("Items from server:", itemData); // Log the response from the server
+      setItems(itemData);
+      setLoading(false);
+      return itemData;
+    } catch (err: unknown) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onDeleteItem = async (id: number) => {
+    await apiService.deleteItem(id);
+    // Check if the delete request was successful
+    console.log("I just deleted an item!");
+    await getItems(); // Fetch the updated list of items
+  };
+
+  useEffect(() => {
+    console.log("Items:", items);
+  }, [items]);
+```
+
+The `useState` hook is used to create a state variable, and a function to update the state variable. In the function `getItems`, updates the `items` list with the retrieved server data. This simple function results in the `ListItem` component being rendered with new data. React under the hood performed the neccessary DOM manipulation to update the `ListItem` component automatically.
+
+### Props
+
+Feature Reference:
+
+-   **Feature Name**: `Props` \
+-   **Located in**: `client/src/components/ListItem.tsx` \
+-   **Source Code**: [Link to
+    Reference](https://github.com/jpinn97/frameworks_and_languages_module/blob/7c30c485d2d33c0666fd4f8360ebcb1c40d07a7e/client/src/components/ListItem.tsx#L8-L40)
+
+Props are used to pass arguements (data, functions) unidirectionally from a parent component to a child component. The `ListItem` component recieves the `onDeleteItem` function and `item` data from the `App` component. The `onDeleteItem` function is used to delete an item from the server, and the `item` data is used to render the item data. 
+
+``` Javascript
+function ListItem({ onDeleteItem, item }: ListItemProps) {
+  return (
+    <div className="border-soiid border-2 border-black max-w-max">
+      <div data-field="id" key={item.id}>
+        User ID: {item.user_id}
+        <br />
+        <div data-field="description">Description: {item.description}</div>
+        <br />
+        <ul>
+          Keywords:{" "}
+          {Object.keys(item.keywords).map((keyword) => (
+            <li key={keyword}>- {keyword}</li>
+          ))}
+        </ul>
+        <img className="object-scale-down h-48 w-96" src={item.image}></img>
+        <br />
+        Latitude: {item.lat}
+        <br />
+        Longitude: {item.lon}
+        <br />
+        Date From: {item.date_from}
+        <br />
+      </div>
+      <button
+        data-action="delete"
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => onDeleteItem(item.id)}
+      >
+        Delete
+      </button>
+    </div>
+  );
+}
+```
+
+This reusable component, can render any number of items, parsing the `App` item data allows us to eliminate the need for internal state to the component. Props enables separations of concerns, as the ListItem is focused on rendering the item data, and the App component is focused on managing the state of the application.
 ## Client Language Features
 
-### (name of Feature 1)
+### Static Typing
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+TypeScript is a superset of JavaScript that when compiled produces Javascript. TypeScript's biggest offering is static typing, JavaScript is dynamically typed, which means that variables can be assigned any type of value and are inferred at runtime. TypeScript allows us to specify the type of a variable, and the compiler will check if the variable is assigned the correct type. This is useful for catching bugs, and improving code quality before running the application.
 
-### (name of Feature 2)
+Feature Reference:
 
-(Technical description of the feature - 40ish words) (A code block
-snippet example demonstrating the feature) (Explain the
-problem-this-is-solving/why/benefits/problems - 40ish words) (Provide
-reference urls to your sources of information about the feature -
-required)
+-   **Feature Name**: `Static Typing` \
+-   **Located in**: `client/src/api_service.ts` \
+-   **Source Code**: [Link to
+    Reference](https://github.com/jpinn97/frameworks_and_languages_module/blob/7c30c485d2d33c0666fd4f8360ebcb1c40d07a7e/client/src/api_service.ts#L59-L74)
+
+``` TypeScript
+async function postItem<T>(formData: Item): Promise<T> {
+  const fullUrl = `${url}/item`;
+  const response = await fetch(fullUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return (await response.json()) as T;
+}
+```
+
+The intended data type is specified when declaring a variable. In the example above, the `postItem` function is declared to return a generic type `T`, which is asserted by the `return (await response.json()) as T;` statement, the function also expects a `formData` variable of type `Item`.  The compiler then analyzes and checks the code for type safety, and will throw an error if the variable is assigned the wrong type. This treatment is akin to guardrails for developers, and enhances overall code structure and should reduce the likelihood of early runtime errors.
+
+This increases the readability and clarity of the code, as the developer can more easily understand the types of data that is being passed around the application, which in a commercial application should reduce the cognitive load.
+
+### Interfaces
+
+In a commercial application where the codebase is large and complex, interfaces allow a clear and communicative of defining the structure of an object, and the types of its properties. Any change to the interface will cascade to all objects that implement the interface, which is useful for maintaining consistency across the application.
+
+Feature Reference:
+
+-   **Feature Name**: `Interface` \
+-   **Located in**: `client/src/api_service.ts` \
+-   **Source Code**: [Link to
+    Reference](https://github.com/jpinn97/frameworks_and_languages_module/blob/7c30c485d2d33c0666fd4f8360ebcb1c40d07a7e/client/src/api_service.ts#L4-L14)
+
+``` TypeScript
+export interface Item {
+  id?: number;
+  user_id: string;
+  keywords: { [key: string]: string };
+  description: string;
+  image?: string;
+  lat: number;
+  lon: number;
+  date_from?: string;
+  date_to?: string;
+}
+```
+
+Think of the interface as a blueprint, any object that implements the interface must adhere to the blueprint. If an function is expecting an object of type `Item`, a developer may expect the `lat` or `lon` as a string. Without an interface, Javascript will be required to infer and check the type at runtime, furthermore, runtime errors may occur and cost the developer time to debug.
 
 ## Conclusions
 
-(justify why frameworks are recommended - 120ish words) (justify which
-frameworks should be used and why 180ish words)
+In conclusion, the assessment of the prototype server/client application demonstrates the substantial benefits of employing frameworks in the development of commercial software, particularly for a CRUD-based Single Page Application (SPA). Frameworks offer a structured approach, encapsulating best practices, reducing development time, and enhancing maintainability. They provide robust solutions to common problems, allowing developers to focus on unique application features rather than re-implementing foundational elements.
+
+For the server, the Gin framework in Go is recommended due to its efficient handling of concurrency with goroutines, robust middleware support, and intuitive API for handling HTTP requests and JSON data binding. These features facilitate the creation of scalable, high-performance web services. The middleware feature, for instance, streamlines request processing and validation, ensuring data integrity and application security.
+
+On the client side, React's component-based architecture is ideal for managing the SPA's state and user interface. Its declarative nature simplifies the rendering process, enhancing the application's maintainability and scalability. The usage of TypeScript adds the benefit of static typing, improving code quality and reducing runtime errors, which is critical in a commercial environment.
+
+Overall, the combination of Gin and React, complemented by TypeScript, provides a comprehensive solution for developing scalable, maintainable, and efficient web applications. Their community support, extensive documentation, and alignment with modern web development practices make them a sound choice for this project.
